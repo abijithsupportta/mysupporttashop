@@ -1,0 +1,112 @@
+mysupporttashop@ C:\Supportta Projects\MySupporttaShop
+Gö£GöÇGö¼ @apps/superadmin@0.0.0 -> .\apps\superadmin
+Göé Gö£GöÇGöÇ @hookform/resolvers@3.10.0
+Göé Gö£GöÇGöÇ @react-email/components@0.5.7
+Göé Gö£GöÇGöÇ @repo/supabase@0.0.0 deduped -> .\packages\supabase
+Göé Gö£GöÇGöÇ @repo/types@0.0.0 deduped -> .\packages\types
+Göé Gö£GöÇGöÇ @repo/ui@0.0.0 deduped -> .\packages\ui
+Göé Gö£GöÇGöÇ @repo/utils@0.0.0 deduped -> .\packages\utils
+Göé Gö£GöÇGöÇ @supabase/ssr@0.9.0
+Göé Gö£GöÇGöÇ @supabase/supabase-js@2.98.0
+Göé Gö£GöÇGöÇ @tailwindcss/postcss@4.2.1
+Göé Gö£GöÇGöÇ @tanstack/react-table@8.21.3
+Göé Gö£GöÇGöÇ @types/node@22.19.13
+Göé Gö£GöÇGöÇ @types/react-dom@19.2.3
+Göé Gö£GöÇGöÇ @types/react@19.2.14
+Göé Gö£GöÇGöÇ clsx@2.1.1
+Göé Gö£GöÇGöÇ date-fns@3.6.0
+Göé Gö£GöÇGöÇ eslint-config-next@16.1.6
+Göé Gö£GöÇGöÇ eslint@9.39.3
+Göé Gö£GöÇGöÇ framer-motion@11.18.2
+Göé Gö£GöÇGöÇ lucide-react@0.577.0
+Göé Gö£GöÇGöÇ next@16.1.6
+Göé Gö£GöÇGöÇ razorpay@2.9.6
+Göé Gö£GöÇGöÇ react-dom@19.2.0
+Göé Gö£GöÇGöÇ react-hook-form@7.71.2
+Göé Gö£GöÇGöÇ react@19.2.0
+Göé Gö£GöÇGöÇ recharts@2.15.4
+Göé Gö£GöÇGöÇ resend@4.8.0
+Göé Gö£GöÇGöÇ shadcn@2.10.0
+Göé Gö£GöÇGöÇ tailwind-merge@2.6.1
+Göé Gö£GöÇGöÇ tailwindcss@4.2.1
+Göé Gö£GöÇGöÇ typescript@5.9.3
+Göé Gö£GöÇGöÇ zod@3.25.76
+Göé GööGöÇGöÇ zustand@5.0.11
+Gö£GöÇGö¼ @apps/vendor-panel@0.0.0 -> .\apps\vendor-panel
+Göé Gö£GöÇGöÇ @hookform/resolvers@3.10.0 deduped
+Göé Gö£GöÇGöÇ @react-email/components@0.5.7 deduped
+Göé Gö£GöÇGöÇ @repo/supabase@0.0.0 deduped -> .\packages\supabase
+Göé Gö£GöÇGöÇ @repo/types@0.0.0 deduped -> .\packages\types
+Göé Gö£GöÇGöÇ @repo/ui@0.0.0 deduped -> .\packages\ui
+Göé Gö£GöÇGöÇ @repo/utils@0.0.0 deduped -> .\packages\utils
+Göé Gö£GöÇGöÇ @supabase/ssr@0.9.0 deduped
+Göé Gö£GöÇGöÇ @supabase/supabase-js@2.98.0 deduped
+Göé Gö£GöÇGöÇ @tailwindcss/postcss@4.2.1 deduped
+Göé Gö£GöÇGöÇ @tanstack/react-table@8.21.3 deduped
+Göé Gö£GöÇGöÇ @types/node@22.19.13 deduped
+Göé Gö£GöÇGöÇ @types/react-dom@19.2.3 deduped
+Göé Gö£GöÇGöÇ @types/react@19.2.14 deduped
+Göé Gö£GöÇGöÇ clsx@2.1.1 deduped
+Göé Gö£GöÇGöÇ date-fns@3.6.0 deduped
+Göé Gö£GöÇGöÇ eslint-config-next@16.1.6 deduped
+Göé Gö£GöÇGöÇ eslint@9.39.3 deduped
+Göé Gö£GöÇGöÇ framer-motion@11.18.2 deduped
+Göé Gö£GöÇGöÇ lucide-react@0.577.0 deduped
+Göé Gö£GöÇGöÇ next@16.1.6 deduped
+Göé Gö£GöÇGöÇ razorpay@2.9.6 deduped
+Göé Gö£GöÇGöÇ react-dom@19.2.0 deduped
+Göé Gö£GöÇGöÇ react-hook-form@7.71.2 deduped
+Göé Gö£GöÇGöÇ react@19.2.0 deduped
+Göé Gö£GöÇGöÇ recharts@2.15.4 deduped
+Göé Gö£GöÇGöÇ resend@4.8.0 deduped
+Göé Gö£GöÇGöÇ shadcn@2.10.0 deduped
+Göé Gö£GöÇGöÇ tailwind-merge@2.6.1 deduped
+Göé Gö£GöÇGöÇ tailwindcss@4.2.1 deduped
+Göé Gö£GöÇGöÇ typescript@5.9.3 deduped
+Göé Gö£GöÇGöÇ zod@3.25.76 deduped
+Göé GööGöÇGöÇ zustand@5.0.11 deduped
+Gö£GöÇGö¼ @apps/vendor-storefront@0.0.0 -> .\apps\vendor-storefront
+Göé Gö£GöÇGöÇ @hookform/resolvers@3.10.0 deduped
+Göé Gö£GöÇGöÇ @react-email/components@0.5.7 deduped
+Göé Gö£GöÇGöÇ @repo/supabase@0.0.0 deduped -> .\packages\supabase
+Göé Gö£GöÇGöÇ @repo/types@0.0.0 deduped -> .\packages\types
+Göé Gö£GöÇGöÇ @repo/ui@0.0.0 deduped -> .\packages\ui
+Göé Gö£GöÇGöÇ @repo/utils@0.0.0 deduped -> .\packages\utils
+Göé Gö£GöÇGöÇ @supabase/ssr@0.9.0 deduped
+Göé Gö£GöÇGöÇ @supabase/supabase-js@2.98.0 deduped
+Göé Gö£GöÇGöÇ @tailwindcss/postcss@4.2.1 deduped
+Göé Gö£GöÇGöÇ @tanstack/react-table@8.21.3 deduped
+Göé Gö£GöÇGöÇ @types/node@22.19.13 deduped
+Göé Gö£GöÇGöÇ @types/react-dom@19.2.3 deduped
+Göé Gö£GöÇGöÇ @types/react@19.2.14 deduped
+Göé Gö£GöÇGöÇ clsx@2.1.1 deduped
+Göé Gö£GöÇGöÇ date-fns@3.6.0 deduped
+Göé Gö£GöÇGöÇ eslint-config-next@16.1.6 deduped
+Göé Gö£GöÇGöÇ eslint@9.39.3 deduped
+Göé Gö£GöÇGöÇ framer-motion@11.18.2 deduped
+Göé Gö£GöÇGöÇ lucide-react@0.577.0 deduped
+Göé Gö£GöÇGöÇ next@16.1.6 deduped
+Göé Gö£GöÇGöÇ react-dom@19.2.0 deduped
+Göé Gö£GöÇGöÇ react-hook-form@7.71.2 deduped
+Göé Gö£GöÇGöÇ react@19.2.0 deduped
+Göé Gö£GöÇGöÇ recharts@2.15.4 deduped
+Göé Gö£GöÇGöÇ resend@4.8.0 deduped
+Göé Gö£GöÇGöÇ tailwind-merge@2.6.1 deduped
+Göé Gö£GöÇGöÇ tailwindcss@4.2.1 deduped
+Göé Gö£GöÇGöÇ typescript@5.9.3 deduped
+Göé Gö£GöÇGöÇ zod@3.25.76 deduped
+Göé GööGöÇGöÇ zustand@5.0.11 deduped
+Gö£GöÇGöÇ @emnapi/core@1.8.1 extraneous
+Gö£GöÇGöÇ @emnapi/runtime@1.8.1 extraneous
+Gö£GöÇGöÇ @emnapi/wasi-threads@1.1.0 extraneous
+Gö£GöÇGöÇ @napi-rs/wasm-runtime@0.2.12 extraneous
+Gö£GöÇGö¼ @repo/supabase@0.0.0 -> .\packages\supabase
+Göé GööGöÇGöÇ typescript@5.9.3 deduped
+Gö£GöÇGö¼ @repo/types@0.0.0 -> .\packages\types
+Göé GööGöÇGöÇ typescript@5.9.3 deduped
+Gö£GöÇGö¼ @repo/ui@0.0.0 -> .\packages\ui
+Göé GööGöÇGöÇ typescript@5.9.3 deduped
+Gö£GöÇGö¼ @repo/utils@0.0.0 -> .\packages\utils
+Göé GööGöÇGöÇ typescript@5.9.3 deduped
+GööGöÇGöÇ @tybys/wasm-util@0.10.1 extraneous
+

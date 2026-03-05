@@ -1,0 +1,2 @@
+export const DEFAULT_COMMISSION_RATE = 0.1;
+

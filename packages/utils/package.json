@@ -1,0 +1,15 @@
+{
+    "name":  "@repo/utils",
+    "private":  true,
+    "version":  "0.0.0",
+    "main":  "index.ts",
+    "types":  "index.ts",
+    "scripts":  {
+                    "lint":  "echo lint utils",
+                    "typecheck":  "tsc --noEmit",
+                    "build":  "echo build utils"
+                },
+    "devDependencies":  {
+                            "typescript":  "^5"
+                        }
+}

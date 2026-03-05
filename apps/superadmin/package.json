@@ -1,0 +1,53 @@
+{
+    "name": "@apps/superadmin",
+    "private": true,
+    "version": "0.0.0",
+    "scripts": {
+        "port:cleanup": "kill-port 3002",
+        "predev": "npm run port:cleanup",
+        "dev": "next dev -p 3002",
+        "build": "next build",
+        "prestart": "npm run port:cleanup",
+        "start": "next start -p 3002",
+        "lint": "eslint . --max-warnings=0",
+        "typecheck": "tsc --noEmit"
+    },
+    "dependencies": {
+        "@hookform/resolvers": "^3",
+        "@react-email/components": "^0",
+        "@repo/supabase": "*",
+        "@repo/types": "*",
+        "@repo/ui": "*",
+        "@repo/utils": "*",
+        "@supabase/ssr": "^0",
+        "@supabase/supabase-js": "^2",
+        "@tanstack/react-table": "^8",
+        "clsx": "^2",
+        "date-fns": "^3",
+        "framer-motion": "^11",
+        "lucide-react": "^0",
+        "next": "16.1.6",
+        "razorpay": "^2",
+        "react": "19.2.0",
+        "react-dom": "19.2.0",
+        "react-hook-form": "^7",
+        "recharts": "^2",
+        "resend": "^4",
+        "tailwind-merge": "^2",
+        "zod": "^3",
+        "zustand": "^5"
+    },
+    "devDependencies": {
+        "@tailwindcss/postcss": "^4",
+        "@types/node": "^22",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "babel-plugin-react-compiler": "^1.0.0",
+        "eslint": "^9",
+        "eslint-config-next": "16.1.6",
+        "kill-port": "^2.0.1",
+        "shadcn": "^2",
+        "tailwindcss": "^4",
+        "typescript": "^5"
+    }
+}

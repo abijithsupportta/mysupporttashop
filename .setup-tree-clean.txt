@@ -1,0 +1,260 @@
+apps/
++-- superadmin/
+¦   +-- app/
+¦   ¦   +-- (dashboard)/
+¦   ¦   ¦   +-- page.tsx
+¦   ¦   +-- globals.css
+¦   ¦   +-- layout.tsx
+¦   ¦   +-- page.tsx
+¦   +-- lib/
+¦   ¦   +-- utils.ts
+¦   +-- components.json
+¦   +-- eslint.config.mjs
+¦   +-- next.config.ts
+¦   +-- next-env.d.ts
+¦   +-- package.json
+¦   +-- postcss.config.mjs
+¦   +-- tsconfig.json
++-- vendor-panel/
+¦   +-- app/
+¦   ¦   +-- (auth)/
+¦   ¦   ¦   +-- forgot-password/
+¦   ¦   ¦   ¦   +-- page.tsx
+¦   ¦   ¦   +-- login/
+¦   ¦   ¦   ¦   +-- page.tsx
+¦   ¦   ¦   +-- register/
+¦   ¦   ¦       +-- page.tsx
+¦   ¦   +-- (dashboard)/
+¦   ¦   ¦   +-- analytics/
+¦   ¦   ¦   ¦   +-- page.tsx
+¦   ¦   ¦   +-- customers/
+¦   ¦   ¦   ¦   +-- [id]/
+¦   ¦   ¦   ¦   +-- page.tsx
+¦   ¦   ¦   +-- dashboard/
+¦   ¦   ¦   ¦   +-- page.tsx
+¦   ¦   ¦   +-- orders/
+¦   ¦   ¦   ¦   +-- [id]/
+¦   ¦   ¦   ¦   +-- page.tsx
+¦   ¦   ¦   +-- payouts/
+¦   ¦   ¦   ¦   +-- page.tsx
+¦   ¦   ¦   +-- products/
+¦   ¦   ¦   ¦   +-- [id]/
+¦   ¦   ¦   ¦   ¦   +-- edit/
+¦   ¦   ¦   ¦   +-- new/
+¦   ¦   ¦   ¦   ¦   +-- page.tsx
+¦   ¦   ¦   ¦   +-- page.tsx
+¦   ¦   ¦   +-- settings/
+¦   ¦   ¦   ¦   +-- account/
+¦   ¦   ¦   ¦   ¦   +-- page.tsx
+¦   ¦   ¦   ¦   +-- notifications/
+¦   ¦   ¦   ¦       +-- page.tsx
+¦   ¦   ¦   +-- store/
+¦   ¦   ¦   ¦   +-- branding/
+¦   ¦   ¦   ¦   ¦   +-- page.tsx
+¦   ¦   ¦   ¦   +-- settings/
+¦   ¦   ¦   ¦   ¦   +-- page.tsx
+¦   ¦   ¦   ¦   +-- setup/
+¦   ¦   ¦   ¦   ¦   +-- page.tsx
+¦   ¦   ¦   ¦   +-- theme/
+¦   ¦   ¦   ¦       +-- page.tsx
+¦   ¦   ¦   +-- layout.tsx
+¦   ¦   +-- api/
+¦   ¦   ¦   +-- analytics/
+¦   ¦   ¦   ¦   +-- route.ts
+¦   ¦   ¦   +-- auth/
+¦   ¦   ¦   ¦   +-- login/
+¦   ¦   ¦   ¦   ¦   +-- route.ts
+¦   ¦   ¦   ¦   +-- logout/
+¦   ¦   ¦   ¦   ¦   +-- route.ts
+¦   ¦   ¦   ¦   +-- register/
+¦   ¦   ¦   ¦       +-- route.ts
+¦   ¦   ¦   +-- customers/
+¦   ¦   ¦   ¦   +-- [id]/
+¦   ¦   ¦   ¦   +-- route.ts
+¦   ¦   ¦   +-- email/
+¦   ¦   ¦   ¦   +-- order-confirmed/
+¦   ¦   ¦   ¦   ¦   +-- route.ts
+¦   ¦   ¦   ¦   +-- order-received/
+¦   ¦   ¦   ¦   ¦   +-- route.ts
+¦   ¦   ¦   ¦   +-- payout-processed/
+¦   ¦   ¦   ¦   ¦   +-- route.ts
+¦   ¦   ¦   ¦   +-- welcome/
+¦   ¦   ¦   ¦       +-- route.ts
+¦   ¦   ¦   +-- orders/
+¦   ¦   ¦   ¦   +-- [id]/
+¦   ¦   ¦   ¦   ¦   +-- status/
+¦   ¦   ¦   ¦   +-- route.ts
+¦   ¦   ¦   +-- payments/
+¦   ¦   ¦   ¦   +-- create/
+¦   ¦   ¦   ¦   ¦   +-- route.ts
+¦   ¦   ¦   ¦   +-- verify/
+¦   ¦   ¦   ¦   ¦   +-- route.ts
+¦   ¦   ¦   ¦   +-- webhook/
+¦   ¦   ¦   ¦       +-- route.ts
+¦   ¦   ¦   +-- products/
+¦   ¦   ¦   ¦   +-- [id]/
+¦   ¦   ¦   ¦   +-- route.ts
+¦   ¦   ¦   +-- store/
+¦   ¦   ¦       +-- branding/
+¦   ¦   ¦       ¦   +-- route.ts
+¦   ¦   ¦       +-- setup/
+¦   ¦   ¦       ¦   +-- route.ts
+¦   ¦   ¦       +-- theme/
+¦   ¦   ¦       ¦   +-- route.ts
+¦   ¦   ¦       +-- route.ts
+¦   ¦   +-- error.tsx
+¦   ¦   +-- globals.css
+¦   ¦   +-- layout.tsx
+¦   ¦   +-- loading.tsx
+¦   ¦   +-- not-found.tsx
+¦   ¦   +-- page.tsx
+¦   +-- components/
+¦   ¦   +-- analytics/
+¦   ¦   ¦   +-- orders-chart.tsx
+¦   ¦   ¦   +-- revenue-chart.tsx
+¦   ¦   ¦   +-- stats-card.tsx
+¦   ¦   +-- common/
+¦   ¦   ¦   +-- confirm-dialog.tsx
+¦   ¦   ¦   +-- empty-state.tsx
+¦   ¦   ¦   +-- error-boundary.tsx
+¦   ¦   ¦   +-- loading-spinner.tsx
+¦   ¦   +-- layout/
+¦   ¦   ¦   +-- mobile-nav.tsx
+¦   ¦   ¦   +-- navbar.tsx
+¦   ¦   ¦   +-- page-header.tsx
+¦   ¦   ¦   +-- sidebar.tsx
+¦   ¦   +-- orders/
+¦   ¦   ¦   +-- order-detail.tsx
+¦   ¦   ¦   +-- order-status-badge.tsx
+¦   ¦   ¦   +-- order-table.tsx
+¦   ¦   +-- payments/
+¦   ¦   ¦   +-- razorpay-button.tsx
+¦   ¦   +-- products/
+¦   ¦   ¦   +-- image-uploader.tsx
+¦   ¦   ¦   +-- product-card.tsx
+¦   ¦   ¦   +-- product-form.tsx
+¦   ¦   ¦   +-- product-table.tsx
+¦   ¦   +-- store/
+¦   ¦   ¦   +-- branding-form.tsx
+¦   ¦   ¦   +-- store-preview.tsx
+¦   ¦   ¦   +-- theme-picker.tsx
+¦   ¦   +-- ui/
+¦   ¦       +-- avatar.tsx
+¦   ¦       +-- badge.tsx
+¦   ¦       +-- button.tsx
+¦   ¦       +-- card.tsx
+¦   ¦       +-- dropdown.tsx
+¦   ¦       +-- input.tsx
+¦   ¦       +-- modal.tsx
+¦   ¦       +-- skeleton.tsx
+¦   ¦       +-- table.tsx
+¦   ¦       +-- toast.tsx
+¦   +-- constants/
+¦   ¦   +-- commission.ts
+¦   ¦   +-- order-status.ts
+¦   ¦   +-- routes.ts
+¦   ¦   +-- themes.ts
+¦   +-- hooks/
+¦   ¦   +-- use-analytics.ts
+¦   ¦   +-- use-auth.ts
+¦   ¦   +-- use-customers.ts
+¦   ¦   +-- use-orders.ts
+¦   ¦   +-- use-products.ts
+¦   ¦   +-- use-store.ts
+¦   ¦   +-- use-upload.ts
+¦   +-- lib/
+¦   ¦   +-- analytics/
+¦   ¦   ¦   +-- get-analytics.ts
+¦   ¦   +-- auth/
+¦   ¦   ¦   +-- helpers.ts
+¦   ¦   ¦   +-- session.ts
+¦   ¦   +-- mailer/
+¦   ¦   ¦   +-- templates/
+¦   ¦   ¦   ¦   +-- order-confirmed.tsx
+¦   ¦   ¦   ¦   +-- order-received.tsx
+¦   ¦   ¦   ¦   +-- payout-processed.tsx
+¦   ¦   ¦   ¦   +-- reset-password.tsx
+¦   ¦   ¦   ¦   +-- welcome.tsx
+¦   ¦   ¦   +-- index.ts
+¦   ¦   +-- orders/
+¦   ¦   ¦   +-- create-order.ts
+¦   ¦   ¦   +-- get-orders.ts
+¦   ¦   ¦   +-- update-status.ts
+¦   ¦   +-- payments/
+¦   ¦   ¦   +-- create-order.ts
+¦   ¦   ¦   +-- razorpay.ts
+¦   ¦   ¦   +-- split-commission.ts
+¦   ¦   ¦   +-- verify-payment.ts
+¦   ¦   +-- products/
+¦   ¦   ¦   +-- create-product.ts
+¦   ¦   ¦   +-- delete-product.ts
+¦   ¦   ¦   +-- update-product.ts
+¦   ¦   ¦   +-- upload-image.ts
+¦   ¦   +-- store/
+¦   ¦   ¦   +-- create-store.ts
+¦   ¦   ¦   +-- update-branding.ts
+¦   ¦   ¦   +-- update-theme.ts
+¦   ¦   +-- supabase/
+¦   ¦   ¦   +-- client.ts
+¦   ¦   ¦   +-- middleware.ts
+¦   ¦   ¦   +-- server.ts
+¦   ¦   +-- validations/
+¦   ¦   ¦   +-- auth.ts
+¦   ¦   ¦   +-- order.ts
+¦   ¦   ¦   +-- product.ts
+¦   ¦   ¦   +-- store.ts
+¦   ¦   +-- utils.ts
+¦   +-- store/
+¦   ¦   +-- auth-store.ts
+¦   ¦   +-- order-store.ts
+¦   ¦   +-- product-store.ts
+¦   ¦   +-- store-store.ts
+¦   +-- types/
+¦   ¦   +-- analytics.ts
+¦   ¦   +-- api.ts
+¦   ¦   +-- customer.ts
+¦   ¦   +-- order.ts
+¦   ¦   +-- payment.ts
+¦   ¦   +-- product.ts
+¦   ¦   +-- store.ts
+¦   ¦   +-- vendor.ts
+¦   +-- .env.example
+¦   +-- .env.local
+¦   +-- components.json
+¦   +-- eslint.config.mjs
+¦   +-- middleware.ts
+¦   +-- next.config.ts
+¦   +-- next-env.d.ts
+¦   +-- package.json
+¦   +-- postcss.config.mjs
+¦   +-- tsconfig.json
++-- vendor-storefront/
+    +-- app/
+    ¦   +-- products/
+    ¦   ¦   +-- page.tsx
+    ¦   +-- globals.css
+    ¦   +-- layout.tsx
+    ¦   +-- page.tsx
+    +-- eslint.config.mjs
+    +-- next.config.ts
+    +-- next-env.d.ts
+    +-- package.json
+    +-- postcss.config.mjs
+    +-- tsconfig.json
+packages/
++-- supabase/
+¦   +-- index.ts
+¦   +-- package.json
+¦   +-- tsconfig.json
++-- types/
+¦   +-- index.ts
+¦   +-- package.json
+¦   +-- tsconfig.json
++-- ui/
+¦   +-- index.ts
+¦   +-- package.json
+¦   +-- tsconfig.json
++-- utils/
+    +-- index.ts
+    +-- package.json
+    +-- tsconfig.json

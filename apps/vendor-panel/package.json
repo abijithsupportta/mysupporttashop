@@ -1,0 +1,48 @@
+{
+    "name":  "@apps/vendor-panel",
+    "private":  true,
+    "version":  "0.0.0",
+    "scripts":  {
+                    "dev":  "next dev -p 3000",
+                    "build":  "next build",
+                    "start":  "next start -p 3000",
+                    "lint":  "eslint . --max-warnings=0",
+                    "typecheck":  "tsc --noEmit"
+                },
+    "dependencies":  {
+                         "@repo/ui":  "*",
+                         "react-dom":  "19.2.0",
+                         "resend":  "^4",
+                         "@tanstack/react-table":  "^8",
+                         "@repo/types":  "*",
+                         "recharts":  "^2",
+                         "razorpay":  "^2",
+                         "@hookform/resolvers":  "^3",
+                         "zustand":  "^5",
+                         "@supabase/ssr":  "^0",
+                         "react":  "19.2.0",
+                         "react-hook-form":  "^7",
+                         "clsx":  "^2",
+                         "date-fns":  "^3",
+                         "@repo/utils":  "*",
+                         "next":  "16.1.6",
+                         "zod":  "^3",
+                         "tailwind-merge":  "^2",
+                         "@supabase/supabase-js":  "^2",
+                         "@repo/supabase":  "*",
+                         "framer-motion":  "^11",
+                         "@react-email/components":  "^0",
+                         "lucide-react":  "^0"
+                     },
+    "devDependencies":  {
+                            "@types/react":  "^19",
+                            "typescript":  "^5",
+                            "@tailwindcss/postcss":  "^4",
+                            "eslint":  "^9",
+                            "tailwindcss":  "^4",
+                            "shadcn":  "^2",
+                            "@types/node":  "^22",
+                            "eslint-config-next":  "16.1.6",
+                            "@types/react-dom":  "^19"
+                        }
+}

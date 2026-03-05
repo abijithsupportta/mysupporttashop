@@ -1,0 +1,7 @@
+C:\Supportta Projects\MySupporttaShop\apps\superadmin\app\page.tsx
+C:\Supportta Projects\MySupporttaShop\apps\superadmin\app\(auth)\login\page.tsx
+C:\Supportta Projects\MySupporttaShop\apps\superadmin\app\(dashboard)\page.tsx
+C:\Supportta Projects\MySupporttaShop\apps\superadmin\app\(dashboard)\dashboard\page.tsx
+C:\Supportta Projects\MySupporttaShop\apps\superadmin\app\(dashboard)\orders\page.tsx
+C:\Supportta Projects\MySupporttaShop\apps\superadmin\app\(dashboard)\vendors\page.tsx
+C:\Supportta Projects\MySupporttaShop\apps\superadmin\app\(dashboard)\vendors\[id]\page.tsx

@@ -1,0 +1,62 @@
+
+> @apps/vendor-panel@0.0.0 build
+> next build
+
+▲ Next.js 16.1.6 (Turbopack, Cache Components)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 8.9s
+  Running TypeScript ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/37) ...
+  Generating static pages using 11 workers (9/37) 
+  Generating static pages using 11 workers (18/37) 
+  Generating static pages using 11 workers (27/37) 
+✓ Generating static pages using 11 workers (37/37) in 746.8ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /analytics
+├ ƒ /api/analytics
+├ ƒ /api/auth/login
+├ ƒ /api/auth/logout
+├ ƒ /api/auth/register
+├ ƒ /api/customers
+├ ƒ /api/email/order-confirmed
+├ ƒ /api/email/order-received
+├ ƒ /api/email/payout-processed
+├ ƒ /api/email/welcome
+├ ƒ /api/orders
+├ ƒ /api/payments/create
+├ ƒ /api/payments/verify
+├ ƒ /api/payments/webhook
+├ ƒ /api/products
+├ ƒ /api/store
+├ ƒ /api/store/branding
+├ ƒ /api/store/setup
+├ ƒ /api/store/theme
+├ ○ /customers
+├ ○ /dashboard
+├ ○ /forgot-password
+├ ○ /login
+├ ○ /orders
+├ ○ /payouts
+├ ○ /products
+├ ○ /products/new
+├ ○ /register
+├ ○ /settings/account
+├ ○ /settings/notifications
+├ ○ /store/branding
+├ ○ /store/settings
+├ ○ /store/setup
+└ ○ /store/theme
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

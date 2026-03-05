@@ -1,0 +1,41 @@
+﻿git : remote: error: Trace: 7b33015c9f9ff23b8ada012
+61fd75a3521f8f9d94c167fb2a880bd3cca624067        
+At line:1 char:8
++ $out = git push --no-progress origin main 2>&1; 
+$out | Out-File -File ...
++        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (remot 
+   e: error: ...a624067        :String) [], Remot  
+  eException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+remote: error: See https://gh.io/lfs for more 
+information.        
+remote: error: File 
+.turbo/cache/35d8f0ff9f1e1f1d.tar.zst is 206.23 
+MB; this exceeds GitHub's file size limit of 
+100.00 MB        
+remote: error: File 
+.turbo/cache/0db1863e252b3565.tar.zst is 253.92 
+MB; this exceeds GitHub's file size limit of 
+100.00 MB        
+remote: error: File 
+.turbo/cache/bdd2987b3e0cae30.tar.zst is 253.92 
+MB; this exceeds GitHub's file size limit of 
+100.00 MB        
+remote: error: File 
+.turbo/cache/cabd53323844d524.tar.zst is 264.85 
+MB; this exceeds GitHub's file size limit of 
+100.00 MB        
+remote: error: File 
+.turbo/cache/71a10ce6d4a10186.tar.zst is 253.92 
+MB; this exceeds GitHub's file size limit of 
+100.00 MB        
+remote: error: GH001: Large files detected. You 
+may want to try Git Large File Storage - 
+https://git-lfs.github.com.        
+To github.com:abijithsupportta/mysupporttashop.git
+ ! [remote rejected] main -> main (pre-receive 
+hook declined)
+error: failed to push some refs to 
+'github.com:abijithsupportta/mysupporttashop.git'

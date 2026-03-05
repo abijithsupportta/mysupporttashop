@@ -1,0 +1,228 @@
+.
+|-- superadmin/
+|   |-- .turbo/
+|   |   |-- turbo-lint.log
+|   |   +-- turbo-typecheck.log
+|   |-- app/
+|   |   |-- (dashboard)/
+|   |   |   +-- page.tsx
+|   |   |-- globals.css
+|   |   |-- layout.tsx
+|   |   +-- page.tsx
+|   |-- lib/
+|   |   +-- utils.ts
+|   |-- components.json
+|   |-- eslint.config.mjs
+|   |-- next.config.ts
+|   |-- next-env.d.ts
+|   |-- package.json
+|   |-- postcss.config.mjs
+|   |-- tsconfig.json
+|   +-- tsconfig.tsbuildinfo
+|-- vendor-panel/
+|   |-- .turbo/
+|   |   |-- turbo-lint.log
+|   |   +-- turbo-typecheck.log
+|   |-- app/
+|   |   |-- (auth)/
+|   |   |   |-- forgot-password/
+|   |   |   |   +-- page.tsx
+|   |   |   |-- login/
+|   |   |   |   +-- page.tsx
+|   |   |   +-- register/
+|   |   |       +-- page.tsx
+|   |   |-- (dashboard)/
+|   |   |   |-- analytics/
+|   |   |   |   +-- page.tsx
+|   |   |   |-- customers/
+|   |   |   |   |-- [id]/
+|   |   |   |   +-- page.tsx
+|   |   |   |-- dashboard/
+|   |   |   |   +-- page.tsx
+|   |   |   |-- orders/
+|   |   |   |   |-- [id]/
+|   |   |   |   +-- page.tsx
+|   |   |   |-- payouts/
+|   |   |   |   +-- page.tsx
+|   |   |   |-- products/
+|   |   |   |   |-- [id]/
+|   |   |   |   |   +-- edit/
+|   |   |   |   |-- new/
+|   |   |   |   |   +-- page.tsx
+|   |   |   |   +-- page.tsx
+|   |   |   |-- settings/
+|   |   |   |   |-- account/
+|   |   |   |   |   +-- page.tsx
+|   |   |   |   +-- notifications/
+|   |   |   |       +-- page.tsx
+|   |   |   |-- store/
+|   |   |   |   |-- branding/
+|   |   |   |   |   +-- page.tsx
+|   |   |   |   |-- settings/
+|   |   |   |   |   +-- page.tsx
+|   |   |   |   |-- setup/
+|   |   |   |   |   +-- page.tsx
+|   |   |   |   +-- theme/
+|   |   |   |       +-- page.tsx
+|   |   |   +-- layout.tsx
+|   |   |-- api/
+|   |   |   |-- analytics/
+|   |   |   |   +-- route.ts
+|   |   |   |-- auth/
+|   |   |   |   |-- login/
+|   |   |   |   |   +-- route.ts
+|   |   |   |   |-- logout/
+|   |   |   |   |   +-- route.ts
+|   |   |   |   +-- register/
+|   |   |   |       +-- route.ts
+|   |   |   |-- customers/
+|   |   |   |   +-- route.ts
+|   |   |   |-- email/
+|   |   |   |   |-- order-confirmed/
+|   |   |   |   |   +-- route.ts
+|   |   |   |   |-- order-received/
+|   |   |   |   |   +-- route.ts
+|   |   |   |   |-- payout-processed/
+|   |   |   |   |   +-- route.ts
+|   |   |   |   +-- welcome/
+|   |   |   |       +-- route.ts
+|   |   |   |-- orders/
+|   |   |   |   |-- [id]/
+|   |   |   |   |   +-- status/
+|   |   |   |   +-- route.ts
+|   |   |   |-- payments/
+|   |   |   |   |-- create/
+|   |   |   |   |   +-- route.ts
+|   |   |   |   |-- verify/
+|   |   |   |   |   +-- route.ts
+|   |   |   |   +-- webhook/
+|   |   |   |       +-- route.ts
+|   |   |   |-- products/
+|   |   |   |   |-- [id]/
+|   |   |   |   +-- route.ts
+|   |   |   +-- store/
+|   |   |       |-- branding/
+|   |   |       |   +-- route.ts
+|   |   |       |-- setup/
+|   |   |       |   +-- route.ts
+|   |   |       |-- theme/
+|   |   |       |   +-- route.ts
+|   |   |       +-- route.ts
+|   |   |-- error.tsx
+|   |   |-- globals.css
+|   |   |-- layout.tsx
+|   |   |-- loading.tsx
+|   |   |-- not-found.tsx
+|   |   +-- page.tsx
+|   |-- constants/
+|   |   |-- commission.ts
+|   |   |-- order-status.ts
+|   |   |-- routes.ts
+|   |   +-- themes.ts
+|   |-- lib/
+|   |   |-- analytics/
+|   |   |   +-- get-analytics.ts
+|   |   |-- auth/
+|   |   |   |-- helpers.ts
+|   |   |   +-- session.ts
+|   |   |-- mailer/
+|   |   |   |-- templates/
+|   |   |   |   |-- order-confirmed.tsx
+|   |   |   |   |-- order-received.tsx
+|   |   |   |   |-- payout-processed.tsx
+|   |   |   |   |-- reset-password.tsx
+|   |   |   |   +-- welcome.tsx
+|   |   |   +-- index.ts
+|   |   |-- orders/
+|   |   |   |-- create-order.ts
+|   |   |   |-- get-orders.ts
+|   |   |   +-- update-status.ts
+|   |   |-- payments/
+|   |   |   |-- create-order.ts
+|   |   |   |-- razorpay.ts
+|   |   |   |-- split-commission.ts
+|   |   |   +-- verify-payment.ts
+|   |   |-- products/
+|   |   |   |-- create-product.ts
+|   |   |   |-- delete-product.ts
+|   |   |   |-- update-product.ts
+|   |   |   +-- upload-image.ts
+|   |   |-- store/
+|   |   |   |-- create-store.ts
+|   |   |   |-- update-branding.ts
+|   |   |   +-- update-theme.ts
+|   |   |-- supabase/
+|   |   |   |-- client.ts
+|   |   |   |-- middleware.ts
+|   |   |   +-- server.ts
+|   |   |-- validations/
+|   |   |   |-- auth.ts
+|   |   |   |-- order.ts
+|   |   |   |-- product.ts
+|   |   |   +-- store.ts
+|   |   +-- utils.ts
+|   |-- types/
+|   |   |-- analytics.ts
+|   |   |-- api.ts
+|   |   |-- customer.ts
+|   |   |-- order.ts
+|   |   |-- payment.ts
+|   |   |-- product.ts
+|   |   |-- store.ts
+|   |   +-- vendor.ts
+|   |-- .env.example
+|   |-- .env.local
+|   |-- components.json
+|   |-- eslint.config.mjs
+|   |-- middleware.ts
+|   |-- next.config.ts
+|   |-- next-env.d.ts
+|   |-- package.json
+|   |-- postcss.config.mjs
+|   |-- tsconfig.json
+|   +-- tsconfig.tsbuildinfo
++-- vendor-storefront/
+    |-- .turbo/
+    |   |-- turbo-lint.log
+    |   +-- turbo-typecheck.log
+    |-- app/
+    |   |-- products/
+    |   |   +-- page.tsx
+    |   |-- globals.css
+    |   |-- layout.tsx
+    |   +-- page.tsx
+    |-- eslint.config.mjs
+    |-- next.config.ts
+    |-- next-env.d.ts
+    |-- package.json
+    |-- postcss.config.mjs
+    |-- tsconfig.json
+    +-- tsconfig.tsbuildinfo
+|-- supabase/
+|   |-- .turbo/
+|   |   |-- turbo-lint.log
+|   |   +-- turbo-typecheck.log
+|   |-- index.ts
+|   |-- package.json
+|   +-- tsconfig.json
+|-- types/
+|   |-- .turbo/
+|   |   |-- turbo-lint.log
+|   |   +-- turbo-typecheck.log
+|   |-- index.ts
+|   |-- package.json
+|   +-- tsconfig.json
+|-- ui/
+|   |-- .turbo/
+|   |   |-- turbo-lint.log
+|   |   +-- turbo-typecheck.log
+|   |-- index.ts
+|   |-- package.json
+|   +-- tsconfig.json
++-- utils/
+    |-- .turbo/
+    |   |-- turbo-lint.log
+    |   +-- turbo-typecheck.log
+    |-- index.ts
+    |-- package.json
+    +-- tsconfig.json
