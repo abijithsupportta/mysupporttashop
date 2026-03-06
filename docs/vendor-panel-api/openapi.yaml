@@ -1,0 +1,304 @@
+openapi: 3.0.3
+info:
+  title: MySupporttaShop Vendor Panel API
+  version: 0.1.0
+  description: |
+    Current vendor-panel API contract as implemented today.
+    All handlers are placeholder TODO handlers returning message-only payloads.
+servers:
+  - url: https://your-vendor-panel-domain
+    description: Production
+  - url: http://localhost:3000
+    description: Local
+
+tags:
+  - name: Auth
+  - name: Analytics
+  - name: Customers
+  - name: Orders
+  - name: Products
+  - name: Store
+  - name: Payments
+  - name: Email
+
+paths:
+  /api/auth/login:
+    get:
+      tags: [Auth]
+      summary: Placeholder login GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Auth]
+      summary: Placeholder login POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/auth/register:
+    get:
+      tags: [Auth]
+      summary: Placeholder register GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Auth]
+      summary: Placeholder register POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/auth/logout:
+    get:
+      tags: [Auth]
+      summary: Placeholder logout GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Auth]
+      summary: Placeholder logout POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/analytics:
+    get:
+      tags: [Analytics]
+      summary: Placeholder analytics GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Analytics]
+      summary: Placeholder analytics POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/customers:
+    get:
+      tags: [Customers]
+      summary: Placeholder customers GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Customers]
+      summary: Placeholder customers POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/orders:
+    get:
+      tags: [Orders]
+      summary: Placeholder orders GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Orders]
+      summary: Placeholder orders POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/products:
+    get:
+      tags: [Products]
+      summary: Placeholder products GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Products]
+      summary: Placeholder products POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/store:
+    get:
+      tags: [Store]
+      summary: Placeholder store GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Store]
+      summary: Placeholder store POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/store/setup:
+    get:
+      tags: [Store]
+      summary: Placeholder store setup GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Store]
+      summary: Placeholder store setup POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/store/branding:
+    get:
+      tags: [Store]
+      summary: Placeholder store branding GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Store]
+      summary: Placeholder store branding POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/store/theme:
+    get:
+      tags: [Store]
+      summary: Placeholder store theme GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Store]
+      summary: Placeholder store theme POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/payments/create:
+    get:
+      tags: [Payments]
+      summary: Placeholder payment create GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Payments]
+      summary: Placeholder payment create POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/payments/verify:
+    get:
+      tags: [Payments]
+      summary: Placeholder payment verify GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Payments]
+      summary: Placeholder payment verify POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/payments/webhook:
+    get:
+      tags: [Payments]
+      summary: Placeholder payment webhook GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Payments]
+      summary: Placeholder payment webhook POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/email/welcome:
+    get:
+      tags: [Email]
+      summary: Placeholder welcome email GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Email]
+      summary: Placeholder welcome email POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/email/order-confirmed:
+    get:
+      tags: [Email]
+      summary: Placeholder order confirmed email GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Email]
+      summary: Placeholder order confirmed email POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/email/order-received:
+    get:
+      tags: [Email]
+      summary: Placeholder order received email GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Email]
+      summary: Placeholder order received email POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+  /api/email/payout-processed:
+    get:
+      tags: [Email]
+      summary: Placeholder payout processed email GET
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoGet"
+    post:
+      tags: [Email]
+      summary: Placeholder payout processed email POST
+      responses:
+        "200":
+          $ref: "#/components/responses/TodoPost"
+
+components:
+  schemas:
+    TodoMessage:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          example: TODO: GET handler
+
+  responses:
+    TodoGet:
+      description: Current placeholder GET response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TodoMessage"
+          example:
+            message: TODO: GET handler
+
+    TodoPost:
+      description: Current placeholder POST response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TodoMessage"
+          example:
+            message: TODO: POST handler

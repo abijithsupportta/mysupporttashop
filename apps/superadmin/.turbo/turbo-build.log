@@ -6,30 +6,54 @@
 - Environments: .env.local
 
   Creating an optimized production build ...
-✓ Compiled successfully in 12.2s
+✓ Compiled successfully in 10.4s
   Running TypeScript ...
   Collecting page data using 11 workers ...
-  Generating static pages using 11 workers (0/13) ...
-  Generating static pages using 11 workers (3/13) 
-  Generating static pages using 11 workers (6/13) 
-  Generating static pages using 11 workers (9/13) 
-✓ Generating static pages using 11 workers (13/13) in 290.4ms
+  Generating static pages using 11 workers (0/29) ...
+  Generating static pages using 11 workers (7/29) 
+  Generating static pages using 11 workers (14/29) 
+  Generating static pages using 11 workers (21/29) 
+✓ Generating static pages using 11 workers (29/29) in 245.4ms
   Finalizing page optimization ...
 
 Route (app)
 ┌ ○ /
 ├ ○ /_not-found
+├ ƒ /analytics
+├ ƒ /api/analytics/revenue
+├ ƒ /api/analytics/vendors/top
 ├ ƒ /api/auth/login
 ├ ƒ /api/auth/logout
+├ ƒ /api/auth/refresh
 ├ ƒ /api/dashboard
 ├ ƒ /api/email/test
+├ ƒ /api/health
 ├ ƒ /api/orders
+├ ƒ /api/orders/[id]
+├ ƒ /api/orders/[id]/status
+├ ƒ /api/v1/analytics/revenue
+├ ƒ /api/v1/analytics/vendors/top
+├ ƒ /api/v1/auth/login
+├ ƒ /api/v1/auth/logout
+├ ƒ /api/v1/auth/refresh
+├ ƒ /api/v1/dashboard
+├ ƒ /api/v1/email/test
+├ ƒ /api/v1/health
+├ ƒ /api/v1/orders
+├ ƒ /api/v1/orders/[id]
+├ ƒ /api/v1/orders/[id]/status
+├ ƒ /api/v1/vendors
+├ ƒ /api/v1/vendors/[id]
+├ ƒ /api/v1/vendors/[id]/products
+├ ƒ /api/v1/vendors/[id]/status
 ├ ƒ /api/vendors
 ├ ƒ /api/vendors/[id]
+├ ƒ /api/vendors/[id]/products
 ├ ƒ /api/vendors/[id]/status
 ├ ƒ /dashboard
 ├ ○ /login
 ├ ƒ /orders
+├ ƒ /system
 ├ ƒ /vendors
 └ ƒ /vendors/[id]
 

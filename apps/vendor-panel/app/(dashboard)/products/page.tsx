@@ -1,4 +1,6 @@
-export default function Page() {
-  return <div>products page.tsx</div>;
+import { redirect } from "next/navigation";
+
+export default function ProductsPage() {
+  redirect("/inventory");
 }
 
