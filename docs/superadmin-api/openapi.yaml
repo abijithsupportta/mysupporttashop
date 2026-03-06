@@ -1,14 +1,14 @@
 openapi: 3.0.3
 info:
   title: MySupporttaShop Superadmin API
-  version: 1.1.0
+  version: 1.2.0
   description: |
     Superadmin API consumed by web and Flutter clients.
-    This API uses cookie-session authentication (Supabase session cookies).
+    Authentication is cookie-session based (Supabase session cookies).
 servers:
-  - url: https://your-superadmin-domain/api/v1
+  - url: https://your-superadmin-domain
     description: Production
-  - url: https://your-preview-domain/api/v1
+  - url: https://your-preview-domain
     description: Preview
 
 security:
@@ -24,7 +24,7 @@ tags:
   - name: Email
 
 paths:
-  /auth/login:
+  /api/v1/auth/login:
     post:
       tags: [Auth]
       summary: Login superadmin user
@@ -35,6 +35,9 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/LoginRequest"
+            example:
+              email: info@supporttasolutions.com
+              password: superadmin123
       responses:
         "200":
           description: Login success
@@ -42,6 +45,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/LoginResponse"
+              example:
+                success: true
+                data:
+                  user:
+                    id: 7682db4a-c7d2-4bf5-bf9a-a42c120fd94f
+                    email: info@supporttasolutions.com
+                timestamp: "2026-03-06T12:00:00.000Z"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -51,7 +61,7 @@ paths:
         "429":
           $ref: "#/components/responses/TooManyRequests"
 
-  /auth/logout:
+  /api/v1/auth/logout:
     post:
       tags: [Auth]
       summary: Logout current user
@@ -62,13 +72,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/LogoutResponse"
+              example:
+                success: true
+                data:
+                  message: Logged out
+                timestamp: "2026-03-06T12:00:00.000Z"
         "401":
           $ref: "#/components/responses/Unauthorized"
 
-  /auth/refresh:
+  /api/v1/auth/refresh:
     post:
       tags: [Auth]
-      summary: Refresh current session
+      summary: Refresh active session
       responses:
         "200":
           description: Session refreshed
@@ -76,42 +91,90 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RefreshResponse"
+              example:
+                success: true
+                data:
+                  user:
+                    id: 7682db4a-c7d2-4bf5-bf9a-a42c120fd94f
+                    email: info@supporttasolutions.com
+                  expires_at: 1760001000
+                timestamp: "2026-03-06T12:00:00.000Z"
         "401":
           $ref: "#/components/responses/Unauthorized"
 
-  /health:
+  /api/v1/health:
     get:
       tags: [Health]
       summary: Service health check
       security: []
       responses:
         "200":
-          description: Health payload
+          description: Service healthy
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthResponse"
+              example:
+                success: true
+                data:
+                  status: healthy
+                  version: 1.0.0
+                  environment: production
+                timestamp: "2026-03-06T12:00:00.000Z"
 
-  /dashboard:
+  /api/v1/dashboard:
     get:
       tags: [Dashboard]
-      summary: Get superadmin dashboard stats
+      summary: Get dashboard stats
       responses:
         "200":
-          description: Dashboard stats payload
+          description: Dashboard payload
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/DashboardResponse"
+              example:
+                success: true
+                data:
+                  total_vendors: 42
+                  total_orders: 320
+                  total_revenue: 2560000
+                  total_commission: 192000
+                  new_vendors_this_month: 6
+                  new_orders_today: 11
+                  pending_orders: 28
+                  active_vendors: 35
+                  recent_orders:
+                    - id: 4fce9259-0e49-47f0-b1cf-b07fceadf3a1
+                      store_id: b93f456f-6a16-4b32-80bc-ec7ad112a22f
+                      vendor_id: 50ab57ad-bb28-4448-a0e5-d1527324e4b5
+                      customer_name: Rahul K
+                      customer_email: rahul@example.com
+                      customer_phone: "9876543210"
+                      total: 1499
+                      commission: 120
+                      payment_status: paid
+                      order_status: processing
+                      created_at: "2026-03-05T09:10:00.000Z"
+                  recent_vendors:
+                    - id: 50ab57ad-bb28-4448-a0e5-d1527324e4b5
+                      email: vendor@example.com
+                      full_name: Vendor Owner
+                      phone: "9876543210"
+                      role: vendor
+                      owner_role: vendor_owner
+                      is_active: true
+                      created_at: "2026-02-28T12:30:00.000Z"
+                timestamp: "2026-03-06T12:00:00.000Z"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "403":
           $ref: "#/components/responses/Forbidden"
 
-  /orders:
+  /api/v1/orders:
     get:
       tags: [Orders]
-      summary: List orders with filters
+      summary: List orders with pagination and filters
       parameters:
         - $ref: "#/components/parameters/PageParam"
         - $ref: "#/components/parameters/LimitParam"
@@ -147,11 +210,57 @@ paths:
             example: "2026-03-31"
       responses:
         "200":
-          description: Paginated order list
+          description: Paginated orders
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/OrdersListResponse"
+              example:
+                success: true
+                data:
+                  - id: 4fce9259-0e49-47f0-b1cf-b07fceadf3a1
+                    store_id: b93f456f-6a16-4b32-80bc-ec7ad112a22f
+                    vendor_id: 50ab57ad-bb28-4448-a0e5-d1527324e4b5
+                    customer_name: Rahul K
+                    customer_email: rahul@example.com
+                    customer_phone: "9876543210"
+                    total: 1499
+                    commission: 120
+                    payment_status: paid
+                    order_status: processing
+                    created_at: "2026-03-05T09:10:00.000Z"
+                    store:
+                      id: b93f456f-6a16-4b32-80bc-ec7ad112a22f
+                      vendor_id: 50ab57ad-bb28-4448-a0e5-d1527324e4b5
+                      name: Chennai Foods
+                      slug: chennai-foods
+                      description: South Indian snacks and meals
+                      logo_url: https://cdn.example.com/store-logo.png
+                      banner_url: https://cdn.example.com/store-banner.png
+                      address: 12 Gandhi Road
+                      city: Chennai
+                      state: Tamil Nadu
+                      district: Chennai
+                      pincode: "600001"
+                      status: active
+                      is_published: true
+                      total_products: 38
+                      total_orders: 510
+                      total_revenue: 1230000
+                      created_at: "2025-12-12T08:00:00.000Z"
+                meta:
+                  total: 320
+                  page: 1
+                  limit: 10
+                  total_pages: 32
+                  has_next: true
+                  has_prev: false
+                summary:
+                  total_revenue: 2560000
+                  total_commission: 192000
+                sort_by: created_at
+                sort_order: desc
+                timestamp: "2026-03-06T12:00:00.000Z"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -159,19 +268,42 @@ paths:
         "403":
           $ref: "#/components/responses/Forbidden"
 
-  /orders/{id}:
+  /api/v1/orders/{id}:
     parameters:
       - $ref: "#/components/parameters/IdPathParam"
     get:
       tags: [Orders]
-      summary: Get order details
+      summary: Get order details by id
       responses:
         "200":
-          description: Order payload
+          description: Order details
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/OrderResponse"
+              example:
+                success: true
+                data:
+                  id: 4fce9259-0e49-47f0-b1cf-b07fceadf3a1
+                  store_id: b93f456f-6a16-4b32-80bc-ec7ad112a22f
+                  vendor_id: 50ab57ad-bb28-4448-a0e5-d1527324e4b5
+                  customer_name: Rahul K
+                  customer_email: rahul@example.com
+                  customer_phone: "9876543210"
+                  total: 1499
+                  commission: 120
+                  payment_status: paid
+                  order_status: processing
+                  created_at: "2026-03-05T09:10:00.000Z"
+                  order_items:
+                    - id: 8ec27f9e-c07d-44aa-a0cd-a9398956d8d0
+                      order_id: 4fce9259-0e49-47f0-b1cf-b07fceadf3a1
+                      product_name: Mini Samosa Box
+                      product_image: https://cdn.example.com/samosa.png
+                      quantity: 2
+                      price: 299
+                      total: 598
+                timestamp: "2026-03-06T12:00:00.000Z"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "403":
@@ -179,7 +311,7 @@ paths:
         "404":
           $ref: "#/components/responses/NotFound"
 
-  /orders/{id}/status:
+  /api/v1/orders/{id}/status:
     parameters:
       - $ref: "#/components/parameters/IdPathParam"
     patch:
@@ -190,12 +322,9 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [order_status]
-              properties:
-                order_status:
-                  type: string
-                  enum: [pending, processing, shipped, delivered, cancelled]
+              $ref: "#/components/schemas/UpdateOrderStatusRequest"
+            example:
+              order_status: shipped
       responses:
         "200":
           description: Updated order payload
@@ -212,10 +341,10 @@ paths:
         "404":
           $ref: "#/components/responses/NotFound"
 
-  /vendors:
+  /api/v1/vendors:
     get:
       tags: [Vendors]
-      summary: List vendors with filters
+      summary: List vendors with pagination and filters
       parameters:
         - $ref: "#/components/parameters/PageParam"
         - $ref: "#/components/parameters/LimitParam"
@@ -230,11 +359,55 @@ paths:
             default: all
       responses:
         "200":
-          description: Paginated vendor list
+          description: Paginated vendors
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/VendorsListResponse"
+              example:
+                success: true
+                data:
+                  - id: 50ab57ad-bb28-4448-a0e5-d1527324e4b5
+                    email: vendor@example.com
+                    full_name: Vendor Owner
+                    phone: "9876543210"
+                    role: vendor
+                    owner_role: vendor_owner
+                    is_active: true
+                    created_at: "2026-02-28T12:30:00.000Z"
+                    total_products: 38
+                    total_orders: 510
+                    total_revenue: 1230000
+                    commission_earned: 98400
+                    store:
+                      id: b93f456f-6a16-4b32-80bc-ec7ad112a22f
+                      vendor_id: 50ab57ad-bb28-4448-a0e5-d1527324e4b5
+                      name: Chennai Foods
+                      slug: chennai-foods
+                      description: South Indian snacks and meals
+                      logo_url: https://cdn.example.com/store-logo.png
+                      banner_url: https://cdn.example.com/store-banner.png
+                      address: 12 Gandhi Road
+                      city: Chennai
+                      state: Tamil Nadu
+                      district: Chennai
+                      pincode: "600001"
+                      status: active
+                      is_published: true
+                      total_products: 38
+                      total_orders: 510
+                      total_revenue: 1230000
+                      created_at: "2025-12-12T08:00:00.000Z"
+                meta:
+                  total: 42
+                  page: 1
+                  limit: 10
+                  total_pages: 5
+                  has_next: true
+                  has_prev: false
+                sort_by: created_at
+                sort_order: desc
+                timestamp: "2026-03-06T12:00:00.000Z"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -251,9 +424,28 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CreateVendorRequest"
+            example:
+              email: vendor@example.com
+              password: vendor123
+              full_name: Vendor Owner
+              phone: "9876543210"
+              owner_role: vendor_owner
+              is_active: true
+              store_name: Chennai Foods
+              slug: chennai-foods
+              address: 12 Gandhi Road
+              city: Chennai
+              state: Tamil Nadu
+              district: Chennai
+              pincode: "600001"
+              description: South Indian snacks and meals
+              logo_url: https://cdn.example.com/store-logo.png
+              banner_url: https://cdn.example.com/store-banner.png
+              theme_id: default
+              primary_color: "#e85d2f"
       responses:
         "200":
-          description: Created vendor payload
+          description: Vendor created
           content:
             application/json:
               schema:
@@ -267,22 +459,62 @@ paths:
         "409":
           $ref: "#/components/responses/Conflict"
 
-  /vendors/{id}:
+  /api/v1/vendors/{id}:
     parameters:
       - $ref: "#/components/parameters/IdPathParam"
     get:
       tags: [Vendors]
-      summary: Get vendor detail (includes products and paged orders)
+      summary: Get vendor detail with products and paginated orders
       parameters:
         - $ref: "#/components/parameters/PageParam"
         - $ref: "#/components/parameters/LimitParam"
       responses:
         "200":
-          description: Vendor detail payload
+          description: Vendor detail response
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/VendorDetailResponse"
+              example:
+                success: true
+                data:
+                  vendor:
+                    id: 50ab57ad-bb28-4448-a0e5-d1527324e4b5
+                    email: vendor@example.com
+                    full_name: Vendor Owner
+                    phone: "9876543210"
+                    role: vendor
+                    owner_role: vendor_owner
+                    is_active: true
+                    created_at: "2026-02-28T12:30:00.000Z"
+                    total_products: 38
+                    total_orders: 510
+                    total_revenue: 1230000
+                    commission_earned: 98400
+                  products:
+                    - id: 9600dca4-a7ab-4f56-a064-166ed9d16706
+                      name: Mini Samosa Box
+                      price: 299
+                      stock: 120
+                      status: active
+                      created_at: "2026-02-10T10:00:00.000Z"
+                  orders:
+                    - id: 4fce9259-0e49-47f0-b1cf-b07fceadf3a1
+                      store_id: b93f456f-6a16-4b32-80bc-ec7ad112a22f
+                      vendor_id: 50ab57ad-bb28-4448-a0e5-d1527324e4b5
+                      customer_name: Rahul K
+                      customer_email: rahul@example.com
+                      customer_phone: "9876543210"
+                      total: 1499
+                      commission: 120
+                      payment_status: paid
+                      order_status: processing
+                      created_at: "2026-03-05T09:10:00.000Z"
+                  orders_total: 510
+                  orders_page: 1
+                  orders_limit: 10
+                  orders_total_pages: 51
+                timestamp: "2026-03-06T12:00:00.000Z"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "403":
@@ -299,9 +531,14 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/UpdateVendorRequest"
+            example:
+              full_name: Vendor Owner Updated
+              phone: "9999999999"
+              store_name: Chennai Foods Prime
+              city: Chennai
       responses:
         "200":
-          description: Updated vendor payload
+          description: Vendor updated
           content:
             application/json:
               schema:
@@ -325,6 +562,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeleteVendorResponse"
+              example:
+                success: true
+                data:
+                  message: Vendor deleted
+                timestamp: "2026-03-06T12:00:00.000Z"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -332,7 +574,7 @@ paths:
         "403":
           $ref: "#/components/responses/Forbidden"
 
-  /vendors/{id}/status:
+  /api/v1/vendors/{id}/status:
     parameters:
       - $ref: "#/components/parameters/IdPathParam"
     patch:
@@ -343,14 +585,12 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [is_active]
-              properties:
-                is_active:
-                  type: boolean
+              $ref: "#/components/schemas/UpdateVendorStatusRequest"
+            example:
+              is_active: false
       responses:
         "200":
-          description: Updated vendor payload
+          description: Vendor status updated
           content:
             application/json:
               schema:
@@ -364,12 +604,12 @@ paths:
         "404":
           $ref: "#/components/responses/NotFound"
 
-  /vendors/{id}/products:
+  /api/v1/vendors/{id}/products:
     parameters:
       - $ref: "#/components/parameters/IdPathParam"
     get:
       tags: [Vendors]
-      summary: List products for a vendor
+      summary: List products of a vendor with pagination
       parameters:
         - $ref: "#/components/parameters/PageParam"
         - $ref: "#/components/parameters/LimitParam"
@@ -383,6 +623,25 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VendorProductsResponse"
+              example:
+                success: true
+                data:
+                  - id: 9600dca4-a7ab-4f56-a064-166ed9d16706
+                    name: Mini Samosa Box
+                    price: 299
+                    stock: 120
+                    status: active
+                    created_at: "2026-02-10T10:00:00.000Z"
+                meta:
+                  total: 38
+                  page: 1
+                  limit: 10
+                  total_pages: 4
+                  has_next: true
+                  has_prev: false
+                sort_by: created_at
+                sort_order: desc
+                timestamp: "2026-03-06T12:00:00.000Z"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -390,7 +649,7 @@ paths:
         "403":
           $ref: "#/components/responses/Forbidden"
 
-  /analytics/revenue:
+  /api/v1/analytics/revenue:
     get:
       tags: [Analytics]
       summary: Revenue analytics grouped by day
@@ -404,11 +663,25 @@ paths:
             default: 30
       responses:
         "200":
-          description: Revenue analytics payload
+          description: Revenue analytics response
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/RevenueAnalyticsResponse"
+              example:
+                success: true
+                data:
+                  days: 30
+                  points:
+                    - date: "2026-03-01"
+                      revenue: 15000
+                      commission: 1200
+                      orders: 8
+                    - date: "2026-03-02"
+                      revenue: 19200
+                      commission: 1536
+                      orders: 11
+                timestamp: "2026-03-06T12:00:00.000Z"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -416,7 +689,7 @@ paths:
         "403":
           $ref: "#/components/responses/Forbidden"
 
-  /analytics/vendors/top:
+  /api/v1/analytics/vendors/top:
     get:
       tags: [Analytics]
       summary: Top vendors by paid revenue
@@ -430,11 +703,23 @@ paths:
             default: 10
       responses:
         "200":
-          description: Top vendors payload
+          description: Top vendors analytics
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/TopVendorsResponse"
+              example:
+                success: true
+                data:
+                  limit: 10
+                  vendors:
+                    - vendor_id: 50ab57ad-bb28-4448-a0e5-d1527324e4b5
+                      vendor_name: Chennai Foods
+                      vendor_email: vendor@example.com
+                      total_revenue: 1230000
+                      total_commission: 98400
+                      total_orders: 510
+                timestamp: "2026-03-06T12:00:00.000Z"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -442,7 +727,7 @@ paths:
         "403":
           $ref: "#/components/responses/Forbidden"
 
-  /email/test:
+  /api/v1/email/test:
     post:
       tags: [Email]
       summary: Send test email
@@ -451,18 +736,22 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                to:
-                  type: string
-                  format: email
+              $ref: "#/components/schemas/TestEmailRequest"
+            example:
+              to: qa@example.com
       responses:
         "200":
-          description: Test email sent
+          description: Email sent
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/TestEmailResponse"
+              example:
+                success: true
+                data:
+                  to: qa@example.com
+                  message: Test email sent successfully
+                timestamp: "2026-03-06T12:00:00.000Z"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -478,8 +767,7 @@ components:
       type: apiKey
       in: cookie
       name: sb-access-token
-      description: |
-        Cookie-session auth. Actual Supabase cookie names can vary.
+      description: Supabase session cookie. Cookie names can vary by environment.
 
   parameters:
     IdPathParam:
@@ -488,6 +776,7 @@ components:
       required: true
       schema:
         type: string
+        format: uuid
     PageParam:
       in: query
       name: page
@@ -525,53 +814,105 @@ components:
 
   responses:
     BadRequest:
-      description: Validation error
+      description: Validation failed
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorEnvelope"
+          example:
+            success: false
+            error: Validation failed
+            details:
+              field_errors:
+                email:
+                  - Invalid email
+            timestamp: "2026-03-06T12:00:00.000Z"
     Unauthorized:
-      description: Unauthorized
+      description: Authentication required
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorEnvelope"
+          example:
+            success: false
+            error: Unauthorized
+            details: null
+            timestamp: "2026-03-06T12:00:00.000Z"
     Forbidden:
-      description: Forbidden
+      description: Superadmin role required
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorEnvelope"
+          example:
+            success: false
+            error: Forbidden
+            details: null
+            timestamp: "2026-03-06T12:00:00.000Z"
     NotFound:
       description: Resource not found
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorEnvelope"
+          example:
+            success: false
+            error: Resource not found
+            details: null
+            timestamp: "2026-03-06T12:00:00.000Z"
     TooManyRequests:
-      description: Too many requests
+      description: Rate limit exceeded
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorEnvelope"
+          example:
+            success: false
+            error: Too many requests
+            details:
+              retry_after_seconds: 60
+            timestamp: "2026-03-06T12:00:00.000Z"
     Conflict:
       description: Conflict
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorEnvelope"
+          example:
+            success: false
+            error: Already exists
+            details: null
+            timestamp: "2026-03-06T12:00:00.000Z"
     ServerError:
-      description: Server error
+      description: Internal server error
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorEnvelope"
+          example:
+            success: false
+            error: Server error
+            details: null
+            timestamp: "2026-03-06T12:00:00.000Z"
 
   schemas:
     Timestamp:
       type: string
       format: date-time
-      example: "2026-03-06T12:00:00.000Z"
+
+    ErrorEnvelope:
+      type: object
+      required: [success, error, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [false]
+        error:
+          type: string
+        details:
+          nullable: true
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
 
     PaginationMeta:
       type: object
@@ -590,20 +931,217 @@ components:
         has_prev:
           type: boolean
 
-    ErrorEnvelope:
+    Store:
       type: object
-      required: [success, error, timestamp]
+      required:
+        [id, vendor_id, name, slug, status, is_published, total_products, total_orders, total_revenue, created_at]
       properties:
-        success:
-          type: boolean
-          enum: [false]
-        error:
+        id:
           type: string
-        details:
+          format: uuid
+        vendor_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
           nullable: true
-          description: Optional validation/details payload
-        timestamp:
-          $ref: "#/components/schemas/Timestamp"
+        logo_url:
+          type: string
+          nullable: true
+        banner_url:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        state:
+          type: string
+          nullable: true
+        district:
+          type: string
+          nullable: true
+        pincode:
+          type: string
+          nullable: true
+        status:
+          type: string
+        is_published:
+          type: boolean
+        total_products:
+          type: integer
+        total_orders:
+          type: integer
+        total_revenue:
+          type: number
+        created_at:
+          type: string
+          format: date-time
+
+    VendorOwnerRole:
+      type: string
+      enum: [vendor_owner, shop_owner]
+
+    Vendor:
+      type: object
+      required: [id, email, full_name, phone, role, is_active, created_at]
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        full_name:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+        owner_role:
+          allOf:
+            - $ref: "#/components/schemas/VendorOwnerRole"
+          nullable: true
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        store:
+          $ref: "#/components/schemas/Store"
+        total_products:
+          type: integer
+        total_orders:
+          type: integer
+        total_revenue:
+          type: number
+        commission_earned:
+          type: number
+
+    ProductSummary:
+      type: object
+      required: [id, name, price, stock, status, created_at]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        price:
+          type: number
+        stock:
+          type: integer
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    OrderItem:
+      type: object
+      required: [id, order_id, product_name, product_image, quantity, price, total]
+      properties:
+        id:
+          type: string
+          format: uuid
+        order_id:
+          type: string
+          format: uuid
+        product_name:
+          type: string
+        product_image:
+          type: string
+        quantity:
+          type: integer
+        price:
+          type: number
+        total:
+          type: number
+
+    PaymentStatus:
+      type: string
+      enum: [pending, paid, failed, refunded]
+
+    OrderStatus:
+      type: string
+      enum: [pending, processing, shipped, delivered, cancelled]
+
+    Order:
+      type: object
+      required:
+        [id, store_id, vendor_id, customer_name, customer_email, customer_phone, total, commission, payment_status, order_status, created_at]
+      properties:
+        id:
+          type: string
+          format: uuid
+        store_id:
+          type: string
+          format: uuid
+        vendor_id:
+          type: string
+          format: uuid
+        customer_name:
+          type: string
+        customer_email:
+          type: string
+          format: email
+        customer_phone:
+          type: string
+        total:
+          type: number
+        commission:
+          type: number
+        payment_status:
+          $ref: "#/components/schemas/PaymentStatus"
+        order_status:
+          $ref: "#/components/schemas/OrderStatus"
+        created_at:
+          type: string
+          format: date-time
+        store:
+          $ref: "#/components/schemas/Store"
+        vendor:
+          $ref: "#/components/schemas/Vendor"
+        order_items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+
+    DashboardStats:
+      type: object
+      required:
+        [total_vendors, total_orders, total_revenue, total_commission, new_vendors_this_month, new_orders_today, pending_orders, active_vendors, recent_orders, recent_vendors]
+      properties:
+        total_vendors:
+          type: integer
+        total_orders:
+          type: integer
+        total_revenue:
+          type: number
+        total_commission:
+          type: number
+        new_vendors_this_month:
+          type: integer
+        new_orders_today:
+          type: integer
+        pending_orders:
+          type: integer
+        active_vendors:
+          type: integer
+        recent_orders:
+          type: array
+          items:
+            $ref: "#/components/schemas/Order"
+        recent_vendors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Vendor"
 
     LoginRequest:
       type: object
@@ -615,16 +1153,6 @@ components:
         password:
           type: string
           minLength: 6
-
-    UserRef:
-      type: object
-      required: [id]
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-          nullable: true
 
     LoginResponse:
       type: object
@@ -638,7 +1166,16 @@ components:
           required: [user]
           properties:
             user:
-              $ref: "#/components/schemas/UserRef"
+              type: object
+              required: [id]
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                email:
+                  type: string
+                  format: email
+                  nullable: true
         timestamp:
           $ref: "#/components/schemas/Timestamp"
 
@@ -655,7 +1192,6 @@ components:
           properties:
             message:
               type: string
-              example: Logged out
         timestamp:
           $ref: "#/components/schemas/Timestamp"
 
@@ -671,7 +1207,16 @@ components:
           required: [user, expires_at]
           properties:
             user:
-              $ref: "#/components/schemas/UserRef"
+              type: object
+              required: [id]
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                email:
+                  type: string
+                  format: email
+                  nullable: true
             expires_at:
               type: integer
               nullable: true
@@ -691,13 +1236,10 @@ components:
           properties:
             status:
               type: string
-              example: healthy
             version:
               type: string
-              example: 1.0.0
             environment:
               type: string
-              example: production
         timestamp:
           $ref: "#/components/schemas/Timestamp"
 
@@ -709,14 +1251,13 @@ components:
           type: boolean
           enum: [true]
         data:
-          type: object
-          description: Dashboard aggregate object
-          additionalProperties: true
+          $ref: "#/components/schemas/DashboardStats"
         timestamp:
           $ref: "#/components/schemas/Timestamp"
 
-    Summary:
+    OrdersSummary:
       type: object
+      required: [total_revenue, total_commission]
       properties:
         total_revenue:
           type: number
@@ -725,7 +1266,7 @@ components:
 
     OrdersListResponse:
       type: object
-      required: [success, data, meta, timestamp]
+      required: [success, data, meta, summary, timestamp]
       properties:
         success:
           type: boolean
@@ -733,12 +1274,11 @@ components:
         data:
           type: array
           items:
-            type: object
-            additionalProperties: true
+            $ref: "#/components/schemas/Order"
         meta:
           $ref: "#/components/schemas/PaginationMeta"
         summary:
-          $ref: "#/components/schemas/Summary"
+          $ref: "#/components/schemas/OrdersSummary"
         sort_by:
           type: string
           nullable: true
@@ -756,31 +1296,7 @@ components:
           type: boolean
           enum: [true]
         data:
-          type: object
-          additionalProperties: true
-        timestamp:
-          $ref: "#/components/schemas/Timestamp"
-
-    VendorsListResponse:
-      type: object
-      required: [success, data, meta, timestamp]
-      properties:
-        success:
-          type: boolean
-          enum: [true]
-        data:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-        meta:
-          $ref: "#/components/schemas/PaginationMeta"
-        sort_by:
-          type: string
-          nullable: true
-        sort_order:
-          type: string
-          nullable: true
+          $ref: "#/components/schemas/Order"
         timestamp:
           $ref: "#/components/schemas/Timestamp"
 
@@ -802,9 +1318,7 @@ components:
           type: string
           minLength: 6
         owner_role:
-          type: string
-          enum: [vendor_owner, shop_owner]
-          default: vendor_owner
+          $ref: "#/components/schemas/VendorOwnerRole"
         is_active:
           type: boolean
           default: true
@@ -830,10 +1344,13 @@ components:
           minLength: 4
         description:
           type: string
+          default: ""
         logo_url:
           type: string
+          default: ""
         banner_url:
           type: string
+          default: ""
         theme_id:
           type: string
           default: default
@@ -844,32 +1361,46 @@ components:
     UpdateVendorRequest:
       type: object
       properties:
-        full_name:
-          type: string
-        phone:
-          type: string
-        is_active:
-          type: boolean
-        owner_role:
-          type: string
-          enum: [vendor_owner, shop_owner]
         email:
           type: string
           format: email
+        full_name:
+          type: string
+          minLength: 2
+        phone:
+          type: string
+          minLength: 6
+        owner_role:
+          $ref: "#/components/schemas/VendorOwnerRole"
+        is_active:
+          type: boolean
         store_name:
           type: string
+          minLength: 2
         logo_url:
           type: string
         address:
           type: string
+          minLength: 3
         city:
           type: string
+          minLength: 2
         state:
           type: string
+          minLength: 2
         district:
           type: string
+          minLength: 2
         pincode:
           type: string
+          minLength: 4
+
+    UpdateVendorStatusRequest:
+      type: object
+      required: [is_active]
+      properties:
+        is_active:
+          type: boolean
 
     VendorResponse:
       type: object
@@ -879,10 +1410,33 @@ components:
           type: boolean
           enum: [true]
         data:
-          type: object
-          additionalProperties: true
+          $ref: "#/components/schemas/Vendor"
         timestamp:
           $ref: "#/components/schemas/Timestamp"
+
+    VendorDetailData:
+      type: object
+      required:
+        [vendor, products, orders, orders_total, orders_page, orders_limit, orders_total_pages]
+      properties:
+        vendor:
+          $ref: "#/components/schemas/Vendor"
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductSummary"
+        orders:
+          type: array
+          items:
+            $ref: "#/components/schemas/Order"
+        orders_total:
+          type: integer
+        orders_page:
+          type: integer
+        orders_limit:
+          type: integer
+        orders_total_pages:
+          type: integer
 
     VendorDetailResponse:
       type: object
@@ -892,31 +1446,7 @@ components:
           type: boolean
           enum: [true]
         data:
-          type: object
-          required:
-            [vendor, products, orders, orders_total, orders_page, orders_limit, orders_total_pages]
-          properties:
-            vendor:
-              type: object
-              additionalProperties: true
-            products:
-              type: array
-              items:
-                type: object
-                additionalProperties: true
-            orders:
-              type: array
-              items:
-                type: object
-                additionalProperties: true
-            orders_total:
-              type: integer
-            orders_page:
-              type: integer
-            orders_limit:
-              type: integer
-            orders_total_pages:
-              type: integer
+          $ref: "#/components/schemas/VendorDetailData"
         timestamp:
           $ref: "#/components/schemas/Timestamp"
 
@@ -933,7 +1463,6 @@ components:
           properties:
             message:
               type: string
-              example: Vendor deleted
         timestamp:
           $ref: "#/components/schemas/Timestamp"
 
@@ -947,8 +1476,7 @@ components:
         data:
           type: array
           items:
-            type: object
-            additionalProperties: true
+            $ref: "#/components/schemas/ProductSummary"
         meta:
           $ref: "#/components/schemas/PaginationMeta"
         sort_by:
@@ -960,13 +1488,19 @@ components:
         timestamp:
           $ref: "#/components/schemas/Timestamp"
 
+    UpdateOrderStatusRequest:
+      type: object
+      required: [order_status]
+      properties:
+        order_status:
+          $ref: "#/components/schemas/OrderStatus"
+
     RevenuePoint:
       type: object
       required: [date, revenue, commission, orders]
       properties:
         date:
           type: string
-          example: "2026-03-01"
         revenue:
           type: number
         commission:
@@ -1001,10 +1535,12 @@ components:
       properties:
         vendor_id:
           type: string
+          format: uuid
         vendor_name:
           type: string
         vendor_email:
           type: string
+          format: email
         total_revenue:
           type: number
         total_commission:
@@ -1032,6 +1568,13 @@ components:
         timestamp:
           $ref: "#/components/schemas/Timestamp"
 
+    TestEmailRequest:
+      type: object
+      properties:
+        to:
+          type: string
+          format: email
+
     TestEmailResponse:
       type: object
       required: [success, data, timestamp]
@@ -1045,6 +1588,7 @@ components:
           properties:
             to:
               type: string
+              format: email
             message:
               type: string
         timestamp:
