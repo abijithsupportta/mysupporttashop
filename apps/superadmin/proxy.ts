@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
-const protectedPrefixes = ["/dashboard", "/vendors", "/orders"];
+const protectedPrefixes = ["/dashboard", "/vendors", "/orders", "/analytics", "/system"];
 const defaultSuperadminEmail =
   process.env.SUPERADMIN_EMAIL ?? "info@supporttasolutions.com";
 
@@ -64,5 +64,11 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/vendors/:path*", "/orders/:path*"]
+  matcher: [
+    "/dashboard/:path*",
+    "/vendors/:path*",
+    "/orders/:path*",
+    "/analytics/:path*",
+    "/system/:path*"
+  ]
 };

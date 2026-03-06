@@ -57,5 +57,16 @@ export function ensureSuccessPagination<T>(result: PaginatedResponse<T>): Pagina
     throw new Error("Request failed");
   }
 
+  if (!result.meta) {
+    result.meta = {
+      total: result.total ?? 0,
+      page: result.page ?? 1,
+      limit: result.limit ?? 10,
+      total_pages: result.total_pages ?? 1,
+      has_next: (result.page ?? 1) < (result.total_pages ?? 1),
+      has_prev: (result.page ?? 1) > 1
+    };
+  }
+
   return result;
 }

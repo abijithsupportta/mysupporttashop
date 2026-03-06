@@ -96,6 +96,14 @@ export async function getVendors(
     total: count ?? 0,
     page,
     limit,
-    total_pages: Math.ceil((count ?? 0) / limit)
+    total_pages: Math.max(1, Math.ceil((count ?? 0) / limit)),
+    meta: {
+      total: count ?? 0,
+      page,
+      limit,
+      total_pages: Math.max(1, Math.ceil((count ?? 0) / limit)),
+      has_next: page < Math.max(1, Math.ceil((count ?? 0) / limit)),
+      has_prev: page > 1
+    }
   };
 }

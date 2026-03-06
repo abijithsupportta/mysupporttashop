@@ -1,7 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { z } from "zod";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
-import type { ApiResponse } from "@/types/api";
+import { apiHandler } from "@/lib/api/api-handler";
+import { errorResponse, successResponse } from "@/lib/api/api-response";
+import { parseJsonBody } from "@/lib/api/validation";
+import { assertRateLimit } from "@/lib/api/rate-limit";
+import { logAuditEvent } from "@/lib/api/audit-logger";
 
 const defaultSuperadminEmail =
   process.env.SUPERADMIN_EMAIL ?? "info@supporttasolutions.com";
@@ -11,10 +15,19 @@ const schema = z.object({
   password: z.string().min(6)
 });
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    const { email, password } = schema.parse(body);
+export const POST = apiHandler(async (request: NextRequest) => {
+    const rateLimitResponse = assertRateLimit(request, {
+      keyPrefix: "auth-login",
+      limit: 10,
+      windowMs: 60_000,
+      blockMs: 5 * 60_000
+    });
+
+    if (rateLimitResponse) {
+      return rateLimitResponse;
+    }
+
+    const { email, password } = await parseJsonBody(request, schema);
     const supabase = await getSupabaseServerClient();
 
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -23,11 +36,7 @@ export async function POST(request: Request) {
     });
 
     if (error || !data.user) {
-      const response: ApiResponse<null> = {
-        success: false,
-        error: error?.message ?? "Invalid email or password"
-      };
-      return NextResponse.json(response, { status: 401 });
+      return errorResponse(error?.message ?? "Invalid email or password", 401);
     }
 
     const { data: profile, error: profileError } = await supabase
@@ -41,31 +50,24 @@ export async function POST(request: Request) {
 
     if ((profileError || profile?.role !== "superadmin") && !allowByEmail) {
       await supabase.auth.signOut();
-      const response: ApiResponse<null> = {
-        success: false,
-        error: "Forbidden"
-      };
-      return NextResponse.json(response, { status: 403 });
+      return errorResponse("Forbidden", 403);
     }
 
-    const response: ApiResponse<{ user: { id: string; email: string | undefined } }> = {
-      success: true,
-      data: {
+    await logAuditEvent({
+      actor_user_id: data.user.id,
+      actor_email: data.user.email,
+      action: "auth.login",
+      resource_type: "session",
+      resource_id: data.user.id
+    });
+
+    return successResponse(
+      {
         user: {
           id: data.user.id,
           email: data.user.email
         }
-      }
-    };
-
-    return NextResponse.json(response);
-  } catch (error) {
-    console.error("POST /api/auth/login", error);
-    const message = error instanceof Error ? error.message : "Server error";
-    const response: ApiResponse<null> = {
-      success: false,
-      error: message
-    };
-    return NextResponse.json(response, { status: 400 });
-  }
-}
+      },
+      200
+    );
+});

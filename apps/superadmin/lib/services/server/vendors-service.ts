@@ -8,6 +8,7 @@ import {
   getVendorOrderTotals,
   getVendorOrders,
   getVendorProducts,
+  listVendorProducts,
   getVendorProductsCount,
   getVendorProfile,
   listVendors,
@@ -62,7 +63,15 @@ export async function listVendorsService(
     total: count,
     page,
     limit,
-    total_pages: Math.max(1, Math.ceil(count / limit))
+    total_pages: Math.max(1, Math.ceil(count / limit)),
+    meta: {
+      total: count,
+      page,
+      limit,
+      total_pages: Math.max(1, Math.ceil(count / limit)),
+      has_next: page < Math.max(1, Math.ceil(count / limit)),
+      has_prev: page > 1
+    }
   };
 }
 
@@ -239,4 +248,21 @@ export async function createVendorService(payload: {
     created_at: new Date().toISOString(),
     stores: null
   });
+}
+
+export async function listVendorProductsService(
+  vendorId: string,
+  page: number,
+  limit: number,
+  search = ""
+) {
+  const result = await listVendorProducts(vendorId, page, limit, search);
+
+  return {
+    data: toVendorProducts(result.rows),
+    total: result.totalCount,
+    page,
+    limit,
+    total_pages: Math.max(1, Math.ceil(result.totalCount / limit))
+  };
 }

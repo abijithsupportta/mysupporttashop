@@ -3,13 +3,16 @@
 import {
   CheckCircle,
   Clock,
+  BarChart3,
   Package,
   Percent,
+  Server,
   ShoppingBag,
   TrendingUp,
   UserPlus,
   Users
 } from "lucide-react";
+import Link from "next/link";
 import { StatsCard } from "@/components/dashboard/stats-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { OrderStatusBadge } from "@/components/orders/order-status-badge";
@@ -35,6 +38,24 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
+      <div className="rounded-2xl border border-[color:var(--line)] bg-[linear-gradient(130deg,#0f172a_0%,#1e293b_38%,#334155_100%)] p-6 text-white shadow-[0_20px_45px_rgba(15,23,42,.28)]">
+        <p className="text-xs uppercase tracking-[0.14em] text-white/70">Mission Control</p>
+        <h2 className="mt-2 text-2xl font-semibold tracking-tight">Superadmin Operations Center</h2>
+        <p className="mt-2 text-sm text-white/80">
+          Monitor revenue, vendor activity, and platform stability from a single control surface.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Link href="/analytics" className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-sm hover:bg-white/25">
+            <BarChart3 className="h-4 w-4" />
+            Open Analytics
+          </Link>
+          <Link href="/system" className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-sm hover:bg-white/25">
+            <Server className="h-4 w-4" />
+            Check System Health
+          </Link>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatsCard title="Total Vendors" value={String(stats.total_vendors)} color="blue" icon={<Users className="h-5 w-5" />} />
         <StatsCard title="Total Orders" value={String(stats.total_orders)} color="purple" icon={<ShoppingBag className="h-5 w-5" />} />
@@ -51,7 +72,7 @@ export default function DashboardPage() {
           <CardHeader>
             <CardTitle>Recent Orders</CardTitle>
           </CardHeader>
-          <CardContent className="overflow-x-auto">
+          <CardContent className="overflow-x-auto rounded-xl border border-[color:var(--line)] bg-white">
             <table className="w-full text-sm">
               <thead>
                 <tr>
@@ -66,7 +87,7 @@ export default function DashboardPage() {
               </thead>
               <tbody>
                 {stats.recent_orders.map((order) => (
-                  <tr key={order.id} className="border-t border-[#f0f0f0]">
+                  <tr key={order.id} className="border-t border-[color:var(--line)]">
                     <td className="py-2">{order.id.slice(0, 8)}</td>
                     <td className="py-2">{order.store?.name ?? "-"}</td>
                     <td className="py-2">{order.customer_name}</td>
@@ -85,7 +106,7 @@ export default function DashboardPage() {
           <CardHeader>
             <CardTitle>Recent Vendors</CardTitle>
           </CardHeader>
-          <CardContent className="overflow-x-auto">
+          <CardContent className="overflow-x-auto rounded-xl border border-[color:var(--line)] bg-white">
             <table className="w-full text-sm">
               <thead>
                 <tr>
@@ -98,7 +119,7 @@ export default function DashboardPage() {
               </thead>
               <tbody>
                 {stats.recent_vendors.map((vendor) => (
-                  <tr key={vendor.id} className="border-t border-[#f0f0f0]">
+                  <tr key={vendor.id} className="border-t border-[color:var(--line)]">
                     <td className="py-2">{vendor.full_name}</td>
                     <td className="py-2">{vendor.store?.name ?? "-"}</td>
                     <td className="py-2">{vendor.email}</td>

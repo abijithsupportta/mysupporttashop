@@ -1,24 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { getDashboardStatsService } from "@/lib/services/server/dashboard-service";
-import type { ApiResponse } from "@/types/api";
-import type { DashboardStats } from "@/types/dashboard";
+import { apiHandler } from "@/lib/api/api-handler";
+import { successResponse } from "@/lib/api/api-response";
+import { withSuperadminAuth } from "@/lib/api/with-auth";
 
-export async function GET() {
-  try {
+export const GET = apiHandler(
+  withSuperadminAuth(async (_request: NextRequest) => {
     const stats = await getDashboardStatsService();
-    const response: ApiResponse<DashboardStats> = {
-      success: true,
-      data: stats
-    };
-
-    return NextResponse.json(response);
-  } catch (error) {
-    console.error("GET /api/dashboard", error);
-    const message = error instanceof Error ? error.message : "Server error";
-    const response: ApiResponse<null> = {
-      success: false,
-      error: message
-    };
-    return NextResponse.json(response, { status: 500 });
-  }
-}
+    return successResponse(stats, 200);
+  })
+);

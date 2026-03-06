@@ -77,3 +77,40 @@ export async function listOrders(query: OrdersQuery) {
     summaryRows: summaryRes.data ?? []
   };
 }
+
+export async function getOrderById(orderId: string) {
+  const supabase = getSupabaseAdminClient();
+  const response = await supabase
+    .from("orders")
+    .select(
+      "id,store_id,vendor_id,customer_name,customer_email,customer_phone,total,commission,payment_status,order_status,created_at,stores(name,slug),profiles(full_name,email),order_items(id,order_id,product_name,product_image,quantity,price,total)"
+    )
+    .eq("id", orderId)
+    .maybeSingle();
+
+  if (response.error) {
+    throw new Error(response.error.message);
+  }
+
+  return response.data;
+}
+
+export async function updateOrderStatusById(orderId: string, orderStatus: OrderStatus) {
+  const supabase = getSupabaseAdminClient();
+  const updateResponse = await supabase
+    .from("orders")
+    .update({ order_status: orderStatus })
+    .eq("id", orderId)
+    .select("id")
+    .maybeSingle();
+
+  if (updateResponse.error) {
+    throw new Error(updateResponse.error.message);
+  }
+
+  if (!updateResponse.data) {
+    return null;
+  }
+
+  return getOrderById(orderId);
+}

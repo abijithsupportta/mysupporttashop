@@ -1,11 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { z } from "zod";
 import {
   createVendorService,
   listVendorsService
 } from "@/lib/services/server/vendors-service";
-import type { ApiResponse } from "@/types/api";
-import type { Vendor } from "@/types/vendor";
+import { apiHandler } from "@/lib/api/api-handler";
+import { paginatedResponse, successResponse } from "@/lib/api/api-response";
+import { parseJsonBody, parseQuery } from "@/lib/api/validation";
+import { paginationSchema } from "@/lib/api/pagination";
+import { withSuperadminAuth } from "@/lib/api/with-auth";
+import { logAuditEvent } from "@/lib/api/audit-logger";
 
 const createVendorSchema = z.object({
   email: z.string().email(),
@@ -28,31 +32,36 @@ const createVendorSchema = z.object({
   primary_color: z.string().optional().default("#e85d2f")
 });
 
-export async function GET(request: Request) {
-  try {
+const vendorsQuerySchema = paginationSchema.extend({
+  status: z.enum(["all", "active", "suspended"]).optional().default("all")
+});
+
+export const GET = apiHandler(
+  withSuperadminAuth(async (request: NextRequest) => {
     const { searchParams } = new URL(request.url);
-    const page = Number(searchParams.get("page") ?? "1");
-    const limit = Number(searchParams.get("limit") ?? "10");
-    const search = searchParams.get("search") ?? "";
-    const status = (searchParams.get("status") as "all" | "active" | "suspended" | null) ?? "all";
+    const query = parseQuery(vendorsQuerySchema, searchParams);
 
-    const result = await listVendorsService({ page, limit, search, status });
-    return NextResponse.json(result);
-  } catch (error) {
-    console.error("GET /api/vendors", error);
-    const message = error instanceof Error ? error.message : "Server error";
-    const response: ApiResponse<null> = { success: false, error: message };
-    return NextResponse.json(response, { status: 500 });
-  }
-}
+    const result = await listVendorsService({
+      page: query.page,
+      limit: query.limit,
+      search: query.search,
+      status: query.status
+    });
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    const payload = createVendorSchema.parse(body);
-    const createdVendor: Vendor = await createVendorService({
+    return paginatedResponse(result.data, result.meta, 200, {
+      sort_by: query.sort_by,
+      sort_order: query.sort_order
+    });
+  })
+);
+
+export const POST = apiHandler(
+  withSuperadminAuth(async (request: NextRequest, _context, auth) => {
+    const payload = await parseJsonBody(request, createVendorSchema);
+    const createdVendor = await createVendorService({
       ...payload,
-      owner_role: payload.owner_role,
+      owner_role: payload.owner_role ?? "vendor_owner",
+      is_active: payload.is_active ?? true,
       description: payload.description ?? "",
       logo_url: payload.logo_url ?? "",
       banner_url: payload.banner_url ?? "",
@@ -65,16 +74,15 @@ export async function POST(request: Request) {
       primary_color: payload.primary_color ?? "#e85d2f"
     });
 
-    const response: ApiResponse<Vendor> = {
-      success: true,
-      data: createdVendor
-    };
+    await logAuditEvent({
+      actor_user_id: auth.userId,
+      actor_email: auth.email,
+      action: "vendor.created",
+      resource_type: "vendor",
+      resource_id: createdVendor.id,
+      metadata: { email: createdVendor.email }
+    });
 
-    return NextResponse.json(response);
-  } catch (error) {
-    console.error("POST /api/vendors", error);
-    const message = error instanceof Error ? error.message : "Server error";
-    const response: ApiResponse<null> = { success: false, error: message };
-    return NextResponse.json(response, { status: 400 });
-  }
-}
+    return successResponse(createdVendor, 200);
+  })
+);

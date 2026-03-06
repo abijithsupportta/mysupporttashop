@@ -1,36 +1,37 @@
-import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { z } from "zod";
 import { updateVendorStatusService } from "@/lib/services/server/vendors-service";
-import type { ApiResponse } from "@/types/api";
+import { apiHandler } from "@/lib/api/api-handler";
+import { successResponse } from "@/lib/api/api-response";
+import { parseJsonBody } from "@/lib/api/validation";
+import { withSuperadminAuth } from "@/lib/api/with-auth";
+import { logAuditEvent } from "@/lib/api/audit-logger";
 
 const schema = z.object({
   is_active: z.boolean()
 });
 
-export async function PATCH(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
+export const PATCH = apiHandler(
+  withSuperadminAuth(
+    async (
+      request: NextRequest,
+      { params }: { params: Promise<{ id: string }> },
+      auth
+    ) => {
     const { id } = await params;
-    const body = await request.json();
-    const { is_active } = schema.parse(body);
+    const { is_active } = await parseJsonBody(request, schema);
 
     const updated = await updateVendorStatusService(id, is_active);
 
-    const response: ApiResponse<typeof updated> = {
-      success: true,
-      data: updated
-    };
+    await logAuditEvent({
+      actor_user_id: auth.userId,
+      actor_email: auth.email,
+      action: "vendor.status.updated",
+      resource_type: "vendor",
+      resource_id: id,
+      metadata: { is_active }
+    });
 
-    return NextResponse.json(response);
-  } catch (error) {
-    console.error("PATCH /api/vendors/[id]/status", error);
-    const message = error instanceof Error ? error.message : "Server error";
-    const response: ApiResponse<null> = {
-      success: false,
-      error: message
-    };
-    return NextResponse.json(response, { status: 400 });
-  }
-}
+    return successResponse(updated, 200);
+  })
+);

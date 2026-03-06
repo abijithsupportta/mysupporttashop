@@ -1,0 +1,1051 @@
+openapi: 3.0.3
+info:
+  title: MySupporttaShop Superadmin API
+  version: 1.1.0
+  description: |
+    Superadmin API consumed by web and Flutter clients.
+    This API uses cookie-session authentication (Supabase session cookies).
+servers:
+  - url: https://your-superadmin-domain/api/v1
+    description: Production
+  - url: https://your-preview-domain/api/v1
+    description: Preview
+
+security:
+  - cookieAuth: []
+
+tags:
+  - name: Auth
+  - name: Health
+  - name: Dashboard
+  - name: Orders
+  - name: Vendors
+  - name: Analytics
+  - name: Email
+
+paths:
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Login superadmin user
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Login success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Logout current user
+      responses:
+        "200":
+          description: Logout success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LogoutResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /auth/refresh:
+    post:
+      tags: [Auth]
+      summary: Refresh current session
+      responses:
+        "200":
+          description: Session refreshed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RefreshResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /health:
+    get:
+      tags: [Health]
+      summary: Service health check
+      security: []
+      responses:
+        "200":
+          description: Health payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+
+  /dashboard:
+    get:
+      tags: [Dashboard]
+      summary: Get superadmin dashboard stats
+      responses:
+        "200":
+          description: Dashboard stats payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /orders:
+    get:
+      tags: [Orders]
+      summary: List orders with filters
+      parameters:
+        - $ref: "#/components/parameters/PageParam"
+        - $ref: "#/components/parameters/LimitParam"
+        - $ref: "#/components/parameters/SearchParam"
+        - $ref: "#/components/parameters/SortByParam"
+        - $ref: "#/components/parameters/SortOrderParam"
+        - in: query
+          name: order_status
+          schema:
+            type: string
+            enum: [all, pending, processing, shipped, delivered, cancelled]
+            default: all
+        - in: query
+          name: payment_status
+          schema:
+            type: string
+            enum: [all, pending, paid, failed, refunded]
+            default: all
+        - in: query
+          name: vendor_id
+          schema:
+            type: string
+            default: all
+        - in: query
+          name: from_date
+          schema:
+            type: string
+            example: "2026-03-01"
+        - in: query
+          name: to_date
+          schema:
+            type: string
+            example: "2026-03-31"
+      responses:
+        "200":
+          description: Paginated order list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrdersListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /orders/{id}:
+    parameters:
+      - $ref: "#/components/parameters/IdPathParam"
+    get:
+      tags: [Orders]
+      summary: Get order details
+      responses:
+        "200":
+          description: Order payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /orders/{id}/status:
+    parameters:
+      - $ref: "#/components/parameters/IdPathParam"
+    patch:
+      tags: [Orders]
+      summary: Update order status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [order_status]
+              properties:
+                order_status:
+                  type: string
+                  enum: [pending, processing, shipped, delivered, cancelled]
+      responses:
+        "200":
+          description: Updated order payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /vendors:
+    get:
+      tags: [Vendors]
+      summary: List vendors with filters
+      parameters:
+        - $ref: "#/components/parameters/PageParam"
+        - $ref: "#/components/parameters/LimitParam"
+        - $ref: "#/components/parameters/SearchParam"
+        - $ref: "#/components/parameters/SortByParam"
+        - $ref: "#/components/parameters/SortOrderParam"
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [all, active, suspended]
+            default: all
+      responses:
+        "200":
+          description: Paginated vendor list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VendorsListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+    post:
+      tags: [Vendors]
+      summary: Create vendor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateVendorRequest"
+      responses:
+        "200":
+          description: Created vendor payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VendorResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          $ref: "#/components/responses/Conflict"
+
+  /vendors/{id}:
+    parameters:
+      - $ref: "#/components/parameters/IdPathParam"
+    get:
+      tags: [Vendors]
+      summary: Get vendor detail (includes products and paged orders)
+      parameters:
+        - $ref: "#/components/parameters/PageParam"
+        - $ref: "#/components/parameters/LimitParam"
+      responses:
+        "200":
+          description: Vendor detail payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VendorDetailResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    patch:
+      tags: [Vendors]
+      summary: Update vendor profile/store fields
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateVendorRequest"
+      responses:
+        "200":
+          description: Updated vendor payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VendorResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    delete:
+      tags: [Vendors]
+      summary: Delete vendor
+      responses:
+        "200":
+          description: Vendor deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteVendorResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /vendors/{id}/status:
+    parameters:
+      - $ref: "#/components/parameters/IdPathParam"
+    patch:
+      tags: [Vendors]
+      summary: Update vendor active status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [is_active]
+              properties:
+                is_active:
+                  type: boolean
+      responses:
+        "200":
+          description: Updated vendor payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VendorResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /vendors/{id}/products:
+    parameters:
+      - $ref: "#/components/parameters/IdPathParam"
+    get:
+      tags: [Vendors]
+      summary: List products for a vendor
+      parameters:
+        - $ref: "#/components/parameters/PageParam"
+        - $ref: "#/components/parameters/LimitParam"
+        - $ref: "#/components/parameters/SearchParam"
+        - $ref: "#/components/parameters/SortByParam"
+        - $ref: "#/components/parameters/SortOrderParam"
+      responses:
+        "200":
+          description: Paginated vendor products
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VendorProductsResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /analytics/revenue:
+    get:
+      tags: [Analytics]
+      summary: Revenue analytics grouped by day
+      parameters:
+        - in: query
+          name: days
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 365
+            default: 30
+      responses:
+        "200":
+          description: Revenue analytics payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RevenueAnalyticsResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /analytics/vendors/top:
+    get:
+      tags: [Analytics]
+      summary: Top vendors by paid revenue
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 10
+      responses:
+        "200":
+          description: Top vendors payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TopVendorsResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /email/test:
+    post:
+      tags: [Email]
+      summary: Send test email
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                to:
+                  type: string
+                  format: email
+      responses:
+        "200":
+          description: Test email sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestEmailResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sb-access-token
+      description: |
+        Cookie-session auth. Actual Supabase cookie names can vary.
+
+  parameters:
+    IdPathParam:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    PageParam:
+      in: query
+      name: page
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    LimitParam:
+      in: query
+      name: limit
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    SearchParam:
+      in: query
+      name: search
+      schema:
+        type: string
+        default: ""
+    SortByParam:
+      in: query
+      name: sort_by
+      schema:
+        type: string
+        default: created_at
+    SortOrderParam:
+      in: query
+      name: sort_order
+      schema:
+        type: string
+        enum: [asc, desc]
+        default: desc
+
+  responses:
+    BadRequest:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    TooManyRequests:
+      description: Too many requests
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    ServerError:
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+
+  schemas:
+    Timestamp:
+      type: string
+      format: date-time
+      example: "2026-03-06T12:00:00.000Z"
+
+    PaginationMeta:
+      type: object
+      required: [total, page, limit, total_pages, has_next, has_prev]
+      properties:
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+        total_pages:
+          type: integer
+        has_next:
+          type: boolean
+        has_prev:
+          type: boolean
+
+    ErrorEnvelope:
+      type: object
+      required: [success, error, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [false]
+        error:
+          type: string
+        details:
+          nullable: true
+          description: Optional validation/details payload
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+
+    UserRef:
+      type: object
+      required: [id]
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          nullable: true
+
+    LoginResponse:
+      type: object
+      required: [success, data, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: object
+          required: [user]
+          properties:
+            user:
+              $ref: "#/components/schemas/UserRef"
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+
+    LogoutResponse:
+      type: object
+      required: [success, data, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: object
+          required: [message]
+          properties:
+            message:
+              type: string
+              example: Logged out
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+
+    RefreshResponse:
+      type: object
+      required: [success, data, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: object
+          required: [user, expires_at]
+          properties:
+            user:
+              $ref: "#/components/schemas/UserRef"
+            expires_at:
+              type: integer
+              nullable: true
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+
+    HealthResponse:
+      type: object
+      required: [success, data, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: object
+          required: [status, version, environment]
+          properties:
+            status:
+              type: string
+              example: healthy
+            version:
+              type: string
+              example: 1.0.0
+            environment:
+              type: string
+              example: production
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+
+    DashboardResponse:
+      type: object
+      required: [success, data, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: object
+          description: Dashboard aggregate object
+          additionalProperties: true
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+
+    Summary:
+      type: object
+      properties:
+        total_revenue:
+          type: number
+        total_commission:
+          type: number
+
+    OrdersListResponse:
+      type: object
+      required: [success, data, meta, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+        summary:
+          $ref: "#/components/schemas/Summary"
+        sort_by:
+          type: string
+          nullable: true
+        sort_order:
+          type: string
+          nullable: true
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+
+    OrderResponse:
+      type: object
+      required: [success, data, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: object
+          additionalProperties: true
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+
+    VendorsListResponse:
+      type: object
+      required: [success, data, meta, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+        sort_by:
+          type: string
+          nullable: true
+        sort_order:
+          type: string
+          nullable: true
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+
+    CreateVendorRequest:
+      type: object
+      required:
+        [email, password, full_name, phone, store_name, address, city, state, district, pincode]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+        full_name:
+          type: string
+          minLength: 2
+        phone:
+          type: string
+          minLength: 6
+        owner_role:
+          type: string
+          enum: [vendor_owner, shop_owner]
+          default: vendor_owner
+        is_active:
+          type: boolean
+          default: true
+        store_name:
+          type: string
+          minLength: 2
+        slug:
+          type: string
+        address:
+          type: string
+          minLength: 3
+        city:
+          type: string
+          minLength: 2
+        state:
+          type: string
+          minLength: 2
+        district:
+          type: string
+          minLength: 2
+        pincode:
+          type: string
+          minLength: 4
+        description:
+          type: string
+        logo_url:
+          type: string
+        banner_url:
+          type: string
+        theme_id:
+          type: string
+          default: default
+        primary_color:
+          type: string
+          default: "#e85d2f"
+
+    UpdateVendorRequest:
+      type: object
+      properties:
+        full_name:
+          type: string
+        phone:
+          type: string
+        is_active:
+          type: boolean
+        owner_role:
+          type: string
+          enum: [vendor_owner, shop_owner]
+        email:
+          type: string
+          format: email
+        store_name:
+          type: string
+        logo_url:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        district:
+          type: string
+        pincode:
+          type: string
+
+    VendorResponse:
+      type: object
+      required: [success, data, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: object
+          additionalProperties: true
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+
+    VendorDetailResponse:
+      type: object
+      required: [success, data, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: object
+          required:
+            [vendor, products, orders, orders_total, orders_page, orders_limit, orders_total_pages]
+          properties:
+            vendor:
+              type: object
+              additionalProperties: true
+            products:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+            orders:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+            orders_total:
+              type: integer
+            orders_page:
+              type: integer
+            orders_limit:
+              type: integer
+            orders_total_pages:
+              type: integer
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+
+    DeleteVendorResponse:
+      type: object
+      required: [success, data, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: object
+          required: [message]
+          properties:
+            message:
+              type: string
+              example: Vendor deleted
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+
+    VendorProductsResponse:
+      type: object
+      required: [success, data, meta, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+        sort_by:
+          type: string
+          nullable: true
+        sort_order:
+          type: string
+          nullable: true
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+
+    RevenuePoint:
+      type: object
+      required: [date, revenue, commission, orders]
+      properties:
+        date:
+          type: string
+          example: "2026-03-01"
+        revenue:
+          type: number
+        commission:
+          type: number
+        orders:
+          type: integer
+
+    RevenueAnalyticsResponse:
+      type: object
+      required: [success, data, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: object
+          required: [days, points]
+          properties:
+            days:
+              type: integer
+            points:
+              type: array
+              items:
+                $ref: "#/components/schemas/RevenuePoint"
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+
+    TopVendor:
+      type: object
+      required:
+        [vendor_id, vendor_name, vendor_email, total_revenue, total_commission, total_orders]
+      properties:
+        vendor_id:
+          type: string
+        vendor_name:
+          type: string
+        vendor_email:
+          type: string
+        total_revenue:
+          type: number
+        total_commission:
+          type: number
+        total_orders:
+          type: integer
+
+    TopVendorsResponse:
+      type: object
+      required: [success, data, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: object
+          required: [limit, vendors]
+          properties:
+            limit:
+              type: integer
+            vendors:
+              type: array
+              items:
+                $ref: "#/components/schemas/TopVendor"
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+
+    TestEmailResponse:
+      type: object
+      required: [success, data, timestamp]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          type: object
+          required: [to, message]
+          properties:
+            to:
+              type: string
+            message:
+              type: string
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"

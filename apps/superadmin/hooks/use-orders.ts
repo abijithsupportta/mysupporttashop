@@ -51,8 +51,8 @@ export function useOrders(initial: Partial<OrdersParams> = {}) {
       const result: OrdersResponse = await getOrders(params);
 
       setOrders(result.data);
-      setTotal(result.total);
-      setTotalPages(result.total_pages || 1);
+      setTotal(result.meta.total);
+      setTotalPages(result.meta.total_pages || 1);
       setSummary(result.summary);
     } catch (fetchError) {
       const message =

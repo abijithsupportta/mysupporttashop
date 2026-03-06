@@ -34,7 +34,7 @@ export async function fetchOrders(params: OrdersParams): Promise<OrdersResponse>
     to_date: params.to_date
   });
 
-  const result = await getJson<OrdersResponse>(`/api/orders?${query.toString()}`);
+  const result = await getJson<OrdersResponse>(`/api/v1/orders?${query.toString()}`);
   const paginated = ensureSuccessPagination(result);
 
   return {

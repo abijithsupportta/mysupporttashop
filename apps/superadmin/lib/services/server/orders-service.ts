@@ -1,6 +1,10 @@
-import type { PaginatedResponse } from "@/types/api";
+import type { PaginationMeta } from "@/types/api";
 import type { Order, OrderStatus, PaymentStatus } from "@/types/order";
-import { listOrders } from "@/lib/repositories/orders-repository";
+import {
+  getOrderById,
+  listOrders,
+  updateOrderStatusById
+} from "@/lib/repositories/orders-repository";
 import { toOrders, toOrdersSummary } from "@/lib/transformers/orders";
 
 interface OrdersSummary {
@@ -19,7 +23,14 @@ export interface OrdersListParams {
   to_date?: string;
 }
 
-export interface OrdersServiceResult extends PaginatedResponse<Order> {
+export interface OrdersServiceResult {
+  success: boolean;
+  data: Order[];
+  meta: PaginationMeta;
+  total: number;
+  page: number;
+  limit: number;
+  total_pages: number;
   summary: OrdersSummary;
 }
 
@@ -38,13 +49,43 @@ export async function listOrdersService(params: OrdersListParams): Promise<Order
     to_date: params.to_date ?? ""
   });
 
+  const totalPages = Math.max(1, Math.ceil(result.totalCount / limit));
+
   return {
     success: true,
     data: toOrders(result.rows),
     total: result.totalCount,
     page,
     limit,
-    total_pages: Math.ceil(result.totalCount / limit),
+    total_pages: totalPages,
+    meta: {
+      total: result.totalCount,
+      page,
+      limit,
+      total_pages: totalPages,
+      has_next: page < totalPages,
+      has_prev: page > 1
+    },
     summary: toOrdersSummary(result.summaryRows)
   };
+}
+
+export async function getOrderDetailService(orderId: string): Promise<Order | null> {
+  const row = await getOrderById(orderId);
+  if (!row) {
+    return null;
+  }
+
+  const [order] = toOrders([row]);
+  return order ?? null;
+}
+
+export async function updateOrderStatusService(orderId: string, orderStatus: OrderStatus) {
+  const row = await updateOrderStatusById(orderId, orderStatus);
+  if (!row) {
+    return null;
+  }
+
+  const [order] = toOrders([row]);
+  return order ?? null;
 }

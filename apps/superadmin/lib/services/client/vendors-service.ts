@@ -72,20 +72,20 @@ export async function fetchVendors(params: VendorsParams): Promise<PaginatedResp
     status: params.status
   });
 
-  const result = await getJson<PaginatedResponse<Vendor>>(`/api/vendors?${query.toString()}`);
+  const result = await getJson<PaginatedResponse<Vendor>>(`/api/v1/vendors?${query.toString()}`);
   return ensureSuccessPagination(result);
 }
 
 export async function fetchVendorDetail(vendorId: string, page: number, limit: number) {
   const result = await getJson<ApiResponse<VendorDetailData>>(
-    `/api/vendors/${vendorId}?page=${page}&limit=${limit}`
+    `/api/v1/vendors/${vendorId}?page=${page}&limit=${limit}`
   );
   return ensureSuccessResponse(result);
 }
 
 export async function patchVendorStatus(vendorId: string, isActive: boolean) {
   const result = await sendJson<ApiResponse<Vendor>, { is_active: boolean }>(
-    `/api/vendors/${vendorId}/status`,
+    `/api/v1/vendors/${vendorId}/status`,
     "PATCH",
     {
       is_active: isActive
@@ -97,7 +97,7 @@ export async function patchVendorStatus(vendorId: string, isActive: boolean) {
 
 export async function createVendor(payload: VendorCreatePayload) {
   const result = await sendJson<ApiResponse<Vendor>, VendorCreatePayload>(
-    "/api/vendors",
+    "/api/v1/vendors",
     "POST",
     payload
   );
@@ -106,7 +106,7 @@ export async function createVendor(payload: VendorCreatePayload) {
 
 export async function updateVendor(vendorId: string, payload: VendorUpdatePayload) {
   const result = await sendJson<ApiResponse<Vendor>, VendorUpdatePayload>(
-    `/api/vendors/${vendorId}`,
+    `/api/v1/vendors/${vendorId}`,
     "PATCH",
     payload
   );
@@ -115,7 +115,7 @@ export async function updateVendor(vendorId: string, payload: VendorUpdatePayloa
 
 export async function deleteVendor(vendorId: string) {
   const result = await sendJson<ApiResponse<null>, undefined>(
-    `/api/vendors/${vendorId}`,
+    `/api/v1/vendors/${vendorId}`,
     "DELETE"
   );
   ensureApiSuccess(result);

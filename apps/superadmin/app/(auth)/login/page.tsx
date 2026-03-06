@@ -46,7 +46,7 @@ export default function LoginPage() {
     setApiError("");
 
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch("/api/v1/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values)
@@ -67,11 +67,11 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#f8f8f8] px-4">
-      <Card className="w-full max-w-md">
+    <main className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_10%_0%,#fff3e7,transparent_35%),radial-gradient(circle_at_100%_100%,#ddf3f4,transparent_35%),#f5f7fb] px-4">
+      <Card className="w-full max-w-md border-[color:var(--line)] shadow-[0_22px_50px_rgba(15,23,42,.14)]">
         <CardHeader>
-          <CardTitle className="text-center text-xl">MySupportaShop</CardTitle>
-          <p className="text-center text-sm text-gray-600">Superadmin Login</p>
+          <CardTitle className="text-center text-2xl">MySupporttaShop</CardTitle>
+          <p className="text-center text-sm text-gray-600">Superadmin Command Access</p>
         </CardHeader>
         <CardContent>
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>

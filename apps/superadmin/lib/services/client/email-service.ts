@@ -5,7 +5,7 @@ export async function sendTestEmail() {
   const result = await sendJson<
     ApiResponse<{ to: string; message: string }>,
     undefined
-  >("/api/email/test", "POST");
+  >("/api/v1/email/test", "POST");
 
   return ensureSuccessResponse(result);
 }

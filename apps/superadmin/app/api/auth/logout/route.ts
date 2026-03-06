@@ -1,24 +1,25 @@
-import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
-import type { ApiResponse } from "@/types/api";
+import { apiHandler } from "@/lib/api/api-handler";
+import { successResponse } from "@/lib/api/api-response";
+import { logAuditEvent } from "@/lib/api/audit-logger";
 
-export async function POST() {
-  try {
+export const POST = apiHandler(async (_request: NextRequest) => {
     const supabase = await getSupabaseServerClient();
+        const {
+            data: { user }
+        } = await supabase.auth.getUser();
     await supabase.auth.signOut();
 
-    const response: ApiResponse<null> = {
-      success: true
-    };
+        if (user) {
+            await logAuditEvent({
+                actor_user_id: user.id,
+                actor_email: user.email,
+                action: "auth.logout",
+                resource_type: "session",
+                resource_id: user.id
+            });
+        }
 
-    return NextResponse.json(response);
-  } catch (error) {
-    console.error("POST /api/auth/logout", error);
-    const message = error instanceof Error ? error.message : "Server error";
-    const response: ApiResponse<null> = {
-      success: false,
-      error: message
-    };
-    return NextResponse.json(response, { status: 500 });
-  }
-}
+    return successResponse({ message: "Logged out" }, 200);
+});

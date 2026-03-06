@@ -1,28 +1,46 @@
-import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { z } from "zod";
 import { sendResendTestEmail } from "@/lib/services/server/vendor-email-service";
-import type { ApiResponse } from "@/types/api";
+import { apiHandler } from "@/lib/api/api-handler";
+import { successResponse } from "@/lib/api/api-response";
+import { parseJsonBody } from "@/lib/api/validation";
+import { withSuperadminAuth } from "@/lib/api/with-auth";
+import { logAuditEvent } from "@/lib/api/audit-logger";
 
-export async function POST() {
-  try {
-    const result = await sendResendTestEmail("info@abijithcb.com");
+const emailTestSchema = z
+  .object({
+    to: z.string().email().optional()
+  })
+  .optional();
 
-    const response: ApiResponse<{ to: string; message: string }> = {
-      success: true,
-      data: {
+export const POST = apiHandler(
+  withSuperadminAuth(async (request: NextRequest, _context, auth) => {
+    let to = "info@abijithcb.com";
+
+    if (request.headers.get("content-length")) {
+      const payload = await parseJsonBody(request, emailTestSchema);
+      if (payload?.to) {
+        to = payload.to;
+      }
+    }
+
+    const result = await sendResendTestEmail(to);
+
+    await logAuditEvent({
+      actor_user_id: auth.userId,
+      actor_email: auth.email,
+      action: "email.test.sent",
+      resource_type: "email",
+      resource_id: to,
+      metadata: { to }
+    });
+
+    return successResponse(
+      {
         to: result.to,
         message: "Test email sent successfully"
-      }
-    };
-
-    return NextResponse.json(response);
-  } catch (error) {
-    console.error("POST /api/email/test", error);
-    const message = error instanceof Error ? error.message : "Failed to send test email";
-    const response: ApiResponse<null> = {
-      success: false,
-      error: message
-    };
-
-    return NextResponse.json(response, { status: 500 });
-  }
-}
+      },
+      200
+    );
+  })
+);

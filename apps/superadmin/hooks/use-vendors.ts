@@ -37,8 +37,8 @@ export function useVendors(initial: Partial<VendorsParams> = {}) {
       const result = await getVendors(params);
 
       setVendors(result.data);
-      setTotal(result.total);
-      setTotalPages(result.total_pages || 1);
+      setTotal(result.meta.total);
+      setTotalPages(result.meta.total_pages || 1);
     } catch (fetchError) {
       const message =
         fetchError instanceof Error ? fetchError.message : "Failed to fetch vendors";

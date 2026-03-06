@@ -157,6 +157,39 @@ export async function getVendorProducts(vendorId: string) {
   return response.data ?? [];
 }
 
+export async function listVendorProducts(
+  vendorId: string,
+  page: number,
+  limit: number,
+  search = ""
+) {
+  const supabase = getSupabaseAdminClient();
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
+
+  let statement = supabase
+    .from("products")
+    .select("id,name,price,stock,status,created_at", { count: "exact" })
+    .eq("vendor_id", vendorId)
+    .order("created_at", { ascending: false })
+    .range(from, to);
+
+  if (search.trim()) {
+    statement = statement.ilike("name", `%${search.trim()}%`);
+  }
+
+  const response = await statement;
+
+  if (response.error) {
+    throw new Error(response.error.message);
+  }
+
+  return {
+    rows: response.data ?? [],
+    totalCount: response.count ?? 0
+  };
+}
+
 export async function getVendorOrders(vendorId: string, page: number, limit: number) {
   const supabase = getSupabaseAdminClient();
   const from = (page - 1) * limit;
